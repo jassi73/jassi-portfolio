@@ -27,10 +27,11 @@ export default function ChatAdmin() {
   const [chats, setChats] = useState<ActiveChat[]>([]);
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const [replyText, setReplyText] = useState('');
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const [isSelfTyping, setIsSelfTyping] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
+  const recognitionRef = useRef<any>(null);
 
   const peerRef = useRef<Peer | null>(null);
   const connectionsRef = useRef<{ [peerId: string]: DataConnection }>({});
@@ -282,18 +283,58 @@ export default function ChatAdmin() {
     }, 1500);
   };
 
-  const handleAddEmoji = (emoji: string) => {
-    setReplyText((prev) => prev + emoji);
-    if (activeChatId) {
-      const conn = connectionsRef.current[activeChatId];
-      if (conn && conn.open && !isSelfTyping) {
-        setIsSelfTyping(true);
-        conn.send({ type: 'typing', isTyping: true });
-      }
+  const toggleSpeechRecognition = () => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Web Speech API is not supported in this browser. Try Chrome or Safari.");
+      return;
     }
-    setTimeout(() => {
-      if (inputRef.current) inputRef.current.focus();
-    }, 50);
+
+    if (isListening) {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+      setIsListening(false);
+      return;
+    }
+
+    const rec = new SpeechRecognition();
+    rec.continuous = false;
+    rec.interimResults = false;
+    rec.lang = 'en-US';
+
+    rec.onstart = () => {
+      setIsListening(true);
+    };
+
+    rec.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      if (transcript) {
+        setReplyText((prev) => {
+          const spacing = prev ? ' ' : '';
+          return prev + spacing + transcript;
+        });
+        if (activeChatId) {
+          const conn = connectionsRef.current[activeChatId];
+          if (conn && conn.open && !isSelfTyping) {
+            setIsSelfTyping(true);
+            conn.send({ type: 'typing', isTyping: true });
+          }
+        }
+      }
+    };
+
+    rec.onerror = (err: any) => {
+      console.error('Speech recognition error:', err);
+      setIsListening(false);
+    };
+
+    rec.onend = () => {
+      setIsListening(false);
+    };
+
+    recognitionRef.current = rec;
+    rec.start();
   };
 
   const handleSelectChat = (chatId: string) => {
@@ -322,6 +363,7 @@ export default function ChatAdmin() {
         peerRef.current.destroy();
       }
       if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+      if (recognitionRef.current) recognitionRef.current.stop();
     };
   }, []);
 
@@ -596,115 +638,110 @@ export default function ChatAdmin() {
               <div ref={chatEndRef} />
             </div>
 
-            {/* Input reply form */}
-            <form onSubmit={handleSendReply} style={{ display: 'flex', gap: '0.5rem', position: 'relative' }}>
-              {/* Emoji Picker Popover */}
-              {showEmojiPicker && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    bottom: '48px',
-                    right: '5.5rem', // positioned directly above input
-                    backgroundColor: 'var(--surface-card)',
-                    border: '1px solid var(--border-subtle)',
-                    borderRadius: '8px',
-                    padding: '0.5rem',
-                    boxShadow: '0 4px 15px rgba(0,0,0,0.5)',
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(6, 1fr)',
-                    gap: '0.35rem',
-                    zIndex: 10000,
-                  }}
-                >
-                  {['😊', '😂', '👍', '❤️', '🔥', '🎉', '🚀', '🤔', '🙌', '😎', '👀', '👏', '💯', '💻', '💡', '✨', '👋', '⭐'].map((emoji) => (
-                    <button
-                      key={emoji}
-                      type="button"
-                      onClick={() => {
-                        handleAddEmoji(emoji);
-                        setShowEmojiPicker(false);
-                      }}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        fontSize: '1.2rem',
-                        cursor: 'pointer',
-                        padding: '0.25rem',
-                        borderRadius: '4px',
-                        transition: 'background-color 0.15s',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--surface-card-hover)'}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                    >
-                      {emoji}
-                    </button>
-                  ))}
-                </div>
-              )}
+             {/* Input reply form */}
+             <form 
+               onSubmit={handleSendReply} 
+               className="chat-input-bar-container"
+               style={{ 
+                 display: 'flex', 
+                 alignItems: 'center', 
+                 gap: '0.55rem', 
+                 position: 'relative',
+                 backgroundColor: 'var(--surface-input)',
+                 border: '1px solid var(--border-subtle)',
+                 borderRadius: '24px',
+                 padding: '0.35rem 0.95rem 0.35rem 0.95rem',
+                 transition: 'all 0.2s ease',
+                 opacity: activeChat.online ? 1 : 0.6,
+               }}
+             >
+               {/* Speech Recognition Button */}
+               <button
+                 type="button"
+                 disabled={!activeChat.online}
+                 onClick={toggleSpeechRecognition}
+                 title={isListening ? "Stop listening" : "Start voice input"}
+                 style={{
+                   background: 'none',
+                   border: 'none',
+                   cursor: activeChat.online ? 'pointer' : 'default',
+                   display: 'flex',
+                   alignItems: 'center',
+                   justifyContent: 'center',
+                   color: isListening ? '#ff4d4d' : 'var(--text-gray-muted)',
+                   opacity: activeChat.online ? 1 : 0.3,
+                   padding: '0.2rem',
+                   transition: 'color 0.2s',
+                   animation: isListening ? 'pulse-mic 1s infinite alternate' : 'none',
+                 }}
+                 onMouseEnter={(e) => {
+                   if (activeChat.online && !isListening) e.currentTarget.style.color = 'var(--accent-purple)';
+                 }}
+                 onMouseLeave={(e) => {
+                   if (activeChat.online && !isListening) e.currentTarget.style.color = 'var(--text-gray-muted)';
+                 }}
+               >
+                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                   <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                   <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
+                   <line x1="12" y1="19" x2="12" y2="22" />
+                 </svg>
+               </button>
 
-              <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
-                <input
-                  ref={inputRef}
-                  type="text"
-                  disabled={!activeChat.online}
-                  value={replyText}
-                  onChange={(e) => handleSelfTyping(e.target.value)}
-                  placeholder={activeChat.online ? `Reply to ${activeChat.name}...` : 'Visitor channel is offline.'}
-                  style={{
-                    width: '100%',
-                    padding: '0.75rem',
-                    paddingRight: '2.5rem', // space for emoji smiley
-                    backgroundColor: 'var(--surface-input)',
-                    border: '1px solid var(--border-subtle)',
-                    borderRadius: '6px',
-                    color: 'var(--text-white)',
-                    outline: 'none',
-                  }}
-                />
-                <button
-                  type="button"
-                  disabled={!activeChat.online}
-                  onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                  style={{
-                    position: 'absolute',
-                    right: '0.75rem',
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontSize: '1.2rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    opacity: activeChat.online ? 0.7 : 0.3,
-                    transition: 'opacity 0.2s',
-                  }}
-                  onMouseEnter={(e) => {
-                    if (activeChat.online) e.currentTarget.style.opacity = '1';
-                  }}
-                  onMouseLeave={(e) => {
-                    if (activeChat.online) e.currentTarget.style.opacity = '0.7';
-                  }}
-                >
-                  😊
-                </button>
-              </div>
-              <button 
-                type="submit" 
-                disabled={!activeChat.online || !replyText.trim()} 
-                className="btn-primary-glow"
-                style={{
-                  padding: '0 1.5rem',
-                  fontSize: '0.8rem',
-                  height: '40px',
-                  borderRadius: '6px'
-                }}
-              >
-                Send
-              </button>
-            </form>
+               {/* Input Field */}
+               <input
+                 ref={inputRef}
+                 type="text"
+                 disabled={!activeChat.online}
+                 value={replyText}
+                 onChange={(e) => handleSelfTyping(e.target.value)}
+                 placeholder={activeChat.online ? `Reply to ${activeChat.name}...` : 'Visitor channel is offline.'}
+                 style={{
+                   flex: 1,
+                   background: 'none',
+                   border: 'none',
+                   color: 'var(--text-white)',
+                   outline: 'none',
+                   fontSize: '14.5px',
+                   padding: '0.25rem 0',
+                 }}
+               />
+
+               {/* Send Button */}
+               <button
+                 type="submit"
+                 disabled={!activeChat.online || !replyText.trim()}
+                 style={{
+                   background: 'none',
+                   border: 'none',
+                   color: (activeChat.online && replyText.trim()) ? 'var(--accent-purple)' : 'var(--text-gray-muted)',
+                   opacity: (activeChat.online && replyText.trim()) ? 1 : 0.4,
+                   display: 'flex',
+                   alignItems: 'center',
+                   justifyContent: 'center',
+                   cursor: (activeChat.online && replyText.trim()) ? 'pointer' : 'default',
+                   padding: '0.25rem',
+                   transition: 'color 0.2s, transform 0.2s, opacity 0.2s',
+                 }}
+                 onMouseEnter={(e) => {
+                   if (activeChat.online && replyText.trim()) {
+                     e.currentTarget.style.color = '#6942ff';
+                     e.currentTarget.style.transform = 'scale(1.1)';
+                   }
+                 }}
+                 onMouseLeave={(e) => {
+                   if (activeChat.online && replyText.trim()) {
+                     e.currentTarget.style.color = 'var(--accent-purple)';
+                     e.currentTarget.style.transform = 'scale(1)';
+                   }
+                 }}
+               >
+                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                   <path d="m22 2-7 20-4-9-9-4Z"/>
+                   <path d="M22 2 11 13"/>
+                 </svg>
+               </button>
+             </form>
           </>
         ) : (
           <div style={{ display: 'flex', flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--text-gray-muted)', gap: '1rem', padding: '4rem 0' }}>

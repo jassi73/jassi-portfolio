@@ -331,3 +331,37 @@ select {
   font-size: 16px !important;
 }
 
+/* Chat Input field focus glow */
+.chat-input-field {
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.chat-input-field:focus {
+  border-color: var(--accent-purple) !important;
+  box-shadow: 0 0 8px var(--accent-purple-glow) !important;
+}
+
+/* Telegram-style input bar focus-within highlight */
+.chat-input-bar-container:focus-within {
+  border-color: var(--accent-purple) !important;
+  box-shadow: 0 0 8px var(--accent-purple-glow) !important;
+}
+
+/* Pulsing mic animation for speech recognition active state */
+@keyframes pulse-mic {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0px rgba(255, 77, 77, 0));
+  }
+  100% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 5px rgba(255, 77, 77, 0.6));
+  }
+}
+
+/* Custom font size for the unified chat input */
+.chat-input-bar-container input {
+  font-size: 14.5px !important;
+}
+
+

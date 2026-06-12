@@ -15,10 +15,11 @@ export default function ChatWidget() {
   const [joined, setJoined] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputVal, setInputVal] = useState('');
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [operatorTyping, setOperatorTyping] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const recognitionRef = useRef<any>(null);
 
   // Offline message form states
   const [offlineName, setOfflineName] = useState('');
@@ -202,15 +203,55 @@ export default function ChatWidget() {
     }, 1500);
   };
 
-  const handleAddEmoji = (emoji: string) => {
-    setInputVal((prev) => prev + emoji);
-    if (connRef.current && connRef.current.open && !isTyping) {
-      setIsTyping(true);
-      connRef.current.send({ type: 'typing', isTyping: true });
+  const toggleSpeechRecognition = () => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Web Speech API is not supported in this browser. Try Chrome or Safari.");
+      return;
     }
-    setTimeout(() => {
-      if (inputRef.current) inputRef.current.focus();
-    }, 50);
+
+    if (isListening) {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+      setIsListening(false);
+      return;
+    }
+
+    const rec = new SpeechRecognition();
+    rec.continuous = false;
+    rec.interimResults = false;
+    rec.lang = 'en-US';
+
+    rec.onstart = () => {
+      setIsListening(true);
+    };
+
+    rec.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      if (transcript) {
+        setInputVal((prev) => {
+          const spacing = prev ? ' ' : '';
+          return prev + spacing + transcript;
+        });
+        if (connRef.current && connRef.current.open && !isTyping) {
+          setIsTyping(true);
+          connRef.current.send({ type: 'typing', isTyping: true });
+        }
+      }
+    };
+
+    rec.onerror = (err: any) => {
+      console.error('Speech recognition error:', err);
+      setIsListening(false);
+    };
+
+    rec.onend = () => {
+      setIsListening(false);
+    };
+
+    recognitionRef.current = rec;
+    rec.start();
   };
 
   const handleOfflineSubmit = async (e: React.FormEvent) => {
@@ -279,6 +320,7 @@ export default function ChatWidget() {
       if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
       if (connRef.current) connRef.current.close();
       if (peerRef.current) peerRef.current.destroy();
+      if (recognitionRef.current) recognitionRef.current.stop();
     };
   }, []);
 
@@ -633,104 +675,104 @@ export default function ChatWidget() {
                     <div ref={chatEndRef} />
                   </div>
 
-                  {/* Emoji Picker Popover */}
-                  {showEmojiPicker && (
-                    <div
+                  {/* Chat Input form */}
+                  <form 
+                    onSubmit={handleSendMessage} 
+                    className="chat-input-bar-container"
+                    style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '0.55rem', 
+                      position: 'relative',
+                      backgroundColor: 'var(--surface-input)',
+                      border: '1px solid var(--border-subtle)',
+                      borderRadius: '24px',
+                      padding: '0.35rem 0.95rem 0.35rem 0.95rem',
+                      transition: 'all 0.2s ease',
+                    }}
+                  >
+                    {/* Speech Recognition Button */}
+                    <button
+                      type="button"
+                      onClick={toggleSpeechRecognition}
+                      title={isListening ? "Stop listening" : "Start voice input"}
                       style={{
-                        position: 'absolute',
-                        bottom: '48px',
-                        right: '0.5rem',
-                        backgroundColor: 'var(--surface-card)',
-                        border: '1px solid var(--border-subtle)',
-                        borderRadius: '8px',
-                        padding: '0.5rem',
-                        boxShadow: '0 4px 15px rgba(0,0,0,0.5)',
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(6, 1fr)',
-                        gap: '0.35rem',
-                        zIndex: 10000,
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: isListening ? '#ff4d4d' : 'var(--text-gray-muted)',
+                        padding: '0.2rem',
+                        transition: 'color 0.2s',
+                        animation: isListening ? 'pulse-mic 1s infinite alternate' : 'none',
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!isListening) e.currentTarget.style.color = 'var(--accent-purple)';
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!isListening) e.currentTarget.style.color = 'var(--text-gray-muted)';
                       }}
                     >
-                      {['😊', '😂', '👍', '❤️', '🔥', '🎉', '🚀', '🤔', '🙌', '😎', '👀', '👏', '💯', '💻', '💡', '✨', '👋', '⭐'].map((emoji) => (
-                        <button
-                          key={emoji}
-                          type="button"
-                          onClick={() => handleAddEmoji(emoji)}
-                          style={{
-                            background: 'none',
-                            border: 'none',
-                            fontSize: '1.1rem',
-                            cursor: 'pointer',
-                            padding: '0.2rem',
-                            borderRadius: '4px',
-                            transition: 'background-color 0.15s',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
-                          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--surface-card-hover)'}
-                          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                        >
-                          {emoji}
-                        </button>
-                      ))}
-                    </div>
-                  )}
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                        <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
+                        <line x1="12" y1="19" x2="12" y2="22" />
+                      </svg>
+                    </button>
 
-                  {/* Chat Input form */}
-                  <form onSubmit={handleSendMessage} style={{ display: 'flex', gap: '0.35rem', position: 'relative' }}>
-                    <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
-                      <input
-                        ref={inputRef}
-                        type="text"
-                        value={inputVal}
-                        onChange={(e) => handleSelfTyping(e.target.value)}
-                        placeholder="Type a message..."
-                        style={{
-                          width: '100%',
-                          padding: '0.55rem',
-                          paddingRight: '2rem', // space for emoji smiley
-                          backgroundColor: 'var(--surface-input)',
-                          border: '1px solid var(--border-subtle)',
-                          borderRadius: '6px',
-                          color: 'var(--text-white)',
-                          outline: 'none',
-                        }}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                        style={{
-                          position: 'absolute',
-                          right: '0.5rem',
-                          background: 'none',
-                          border: 'none',
-                          cursor: 'pointer',
-                          fontSize: '1rem',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          opacity: 0.7,
-                          transition: 'opacity 0.2s',
-                        }}
-                        onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-                        onMouseLeave={(e) => e.currentTarget.style.opacity = '0.7'}
-                      >
-                        😊
-                      </button>
-                    </div>
+                    {/* Input Field */}
+                    <input
+                      ref={inputRef}
+                      type="text"
+                      value={inputVal}
+                      onChange={(e) => handleSelfTyping(e.target.value)}
+                      placeholder="Write a message..."
+                      style={{
+                        flex: 1,
+                        background: 'none',
+                        border: 'none',
+                        color: 'var(--text-white)',
+                        outline: 'none',
+                        fontSize: '14.5px',
+                        padding: '0.25rem 0',
+                      }}
+                    />
+
+                    {/* Send Button */}
                     <button
                       type="submit"
                       disabled={!inputVal.trim()}
-                      className="btn-primary-glow"
                       style={{
-                        padding: '0 1rem',
-                        fontSize: '0.72rem',
-                        height: '32px',
-                        borderRadius: '6px'
+                        background: 'none',
+                        border: 'none',
+                        color: inputVal.trim() ? 'var(--accent-purple)' : 'var(--text-gray-muted)',
+                        opacity: inputVal.trim() ? 1 : 0.4,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: inputVal.trim() ? 'pointer' : 'default',
+                        padding: '0.25rem',
+                        transition: 'color 0.2s, transform 0.2s, opacity 0.2s',
+                      }}
+                      onMouseEnter={(e) => {
+                        if (inputVal.trim()) {
+                          e.currentTarget.style.color = '#6942ff';
+                          e.currentTarget.style.transform = 'scale(1.1)';
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (inputVal.trim()) {
+                          e.currentTarget.style.color = 'var(--accent-purple)';
+                          e.currentTarget.style.transform = 'scale(1)';
+                        }
                       }}
                     >
-                      Send
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="m22 2-7 20-4-9-9-4Z"/>
+                        <path d="M22 2 11 13"/>
+                      </svg>
                     </button>
                   </form>
                 </motion.div>
