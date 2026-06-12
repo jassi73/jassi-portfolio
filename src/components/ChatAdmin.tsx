@@ -27,8 +27,10 @@ export default function ChatAdmin() {
   const [chats, setChats] = useState<ActiveChat[]>([]);
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const [replyText, setReplyText] = useState('');
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [isSelfTyping, setIsSelfTyping] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const peerRef = useRef<Peer | null>(null);
   const connectionsRef = useRef<{ [peerId: string]: DataConnection }>({});
@@ -278,6 +280,20 @@ export default function ChatAdmin() {
         conn.send({ type: 'typing', isTyping: false });
       }
     }, 1500);
+  };
+
+  const handleAddEmoji = (emoji: string) => {
+    setReplyText((prev) => prev + emoji);
+    if (activeChatId) {
+      const conn = connectionsRef.current[activeChatId];
+      if (conn && conn.open && !isSelfTyping) {
+        setIsSelfTyping(true);
+        conn.send({ type: 'typing', isTyping: true });
+      }
+    }
+    setTimeout(() => {
+      if (inputRef.current) inputRef.current.focus();
+    }, 50);
   };
 
   const handleSelectChat = (chatId: string) => {
@@ -581,24 +597,100 @@ export default function ChatAdmin() {
             </div>
 
             {/* Input reply form */}
-            <form onSubmit={handleSendReply} style={{ display: 'flex', gap: '0.5rem' }}>
-              <input
-                type="text"
-                disabled={!activeChat.online}
-                value={replyText}
-                onChange={(e) => handleSelfTyping(e.target.value)}
-                placeholder={activeChat.online ? `Reply to ${activeChat.name}...` : 'Visitor channel is offline.'}
-                style={{
-                  flex: 1,
-                  padding: '0.75rem',
-                  backgroundColor: 'var(--surface-input)',
-                  border: '1px solid var(--border-subtle)',
-                  borderRadius: '6px',
-                  color: 'var(--text-white)',
-                  outline: 'none',
-                  fontSize: '0.85rem',
-                }}
-              />
+            <form onSubmit={handleSendReply} style={{ display: 'flex', gap: '0.5rem', position: 'relative' }}>
+              {/* Emoji Picker Popover */}
+              {showEmojiPicker && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: '48px',
+                    right: '5.5rem', // positioned directly above input
+                    backgroundColor: 'var(--surface-card)',
+                    border: '1px solid var(--border-subtle)',
+                    borderRadius: '8px',
+                    padding: '0.5rem',
+                    boxShadow: '0 4px 15px rgba(0,0,0,0.5)',
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(6, 1fr)',
+                    gap: '0.35rem',
+                    zIndex: 10000,
+                  }}
+                >
+                  {['😊', '😂', '👍', '❤️', '🔥', '🎉', '🚀', '🤔', '🙌', '😎', '👀', '👏', '💯', '💻', '💡', '✨', '👋', '⭐'].map((emoji) => (
+                    <button
+                      key={emoji}
+                      type="button"
+                      onClick={() => {
+                        handleAddEmoji(emoji);
+                        setShowEmojiPicker(false);
+                      }}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        fontSize: '1.2rem',
+                        cursor: 'pointer',
+                        padding: '0.25rem',
+                        borderRadius: '4px',
+                        transition: 'background-color 0.15s',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--surface-card-hover)'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                    >
+                      {emoji}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  disabled={!activeChat.online}
+                  value={replyText}
+                  onChange={(e) => handleSelfTyping(e.target.value)}
+                  placeholder={activeChat.online ? `Reply to ${activeChat.name}...` : 'Visitor channel is offline.'}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem',
+                    paddingRight: '2.5rem', // space for emoji smiley
+                    backgroundColor: 'var(--surface-input)',
+                    border: '1px solid var(--border-subtle)',
+                    borderRadius: '6px',
+                    color: 'var(--text-white)',
+                    outline: 'none',
+                  }}
+                />
+                <button
+                  type="button"
+                  disabled={!activeChat.online}
+                  onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                  style={{
+                    position: 'absolute',
+                    right: '0.75rem',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '1.2rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    opacity: activeChat.online ? 0.7 : 0.3,
+                    transition: 'opacity 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (activeChat.online) e.currentTarget.style.opacity = '1';
+                  }}
+                  onMouseLeave={(e) => {
+                    if (activeChat.online) e.currentTarget.style.opacity = '0.7';
+                  }}
+                >
+                  😊
+                </button>
+              </div>
               <button 
                 type="submit" 
                 disabled={!activeChat.online || !replyText.trim()} 

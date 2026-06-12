@@ -15,8 +15,10 @@ export default function ChatWidget() {
   const [joined, setJoined] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputVal, setInputVal] = useState('');
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [operatorTyping, setOperatorTyping] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Offline message form states
   const [offlineName, setOfflineName] = useState('');
@@ -200,6 +202,17 @@ export default function ChatWidget() {
     }, 1500);
   };
 
+  const handleAddEmoji = (emoji: string) => {
+    setInputVal((prev) => prev + emoji);
+    if (connRef.current && connRef.current.open && !isTyping) {
+      setIsTyping(true);
+      connRef.current.send({ type: 'typing', isTyping: true });
+    }
+    setTimeout(() => {
+      if (inputRef.current) inputRef.current.focus();
+    }, 50);
+  };
+
   const handleOfflineSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!offlineName.trim() || !offlineEmail.trim() || !offlineMsg.trim()) {
@@ -368,7 +381,7 @@ export default function ChatWidget() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -5 }}
                   transition={{ duration: 0.15 }}
-                  style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.75rem', overflowY: 'auto', maxHeight: '330px', padding: '0.2rem' }}
+                  style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.75rem', overflowY: 'auto', padding: '0.2rem' }}
                 >
                   <div style={{ textAlign: 'center', marginBottom: '0.25rem' }}>
                     <h5 style={{ color: 'var(--text-white)', fontSize: '0.85rem', fontWeight: 'bold' }}>Jassi is Offline</h5>
@@ -563,7 +576,6 @@ export default function ChatWidget() {
                       borderRadius: '6px',
                       border: '1px solid var(--border-subtle)',
                       marginBottom: '0.75rem',
-                      maxHeight: '290px',
                     }}
                   >
                     {messages.map((msg, index) => {
@@ -621,24 +633,92 @@ export default function ChatWidget() {
                     <div ref={chatEndRef} />
                   </div>
 
-                  {/* Chat Input form */}
-                  <form onSubmit={handleSendMessage} style={{ display: 'flex', gap: '0.35rem' }}>
-                    <input
-                      type="text"
-                      value={inputVal}
-                      onChange={(e) => handleSelfTyping(e.target.value)}
-                      placeholder="Type a message..."
+                  {/* Emoji Picker Popover */}
+                  {showEmojiPicker && (
+                    <div
                       style={{
-                        flex: 1,
-                        padding: '0.55rem',
-                        backgroundColor: 'var(--surface-input)',
+                        position: 'absolute',
+                        bottom: '48px',
+                        right: '0.5rem',
+                        backgroundColor: 'var(--surface-card)',
                         border: '1px solid var(--border-subtle)',
-                        borderRadius: '6px',
-                        color: 'var(--text-white)',
-                        outline: 'none',
-                        fontSize: '0.8rem',
+                        borderRadius: '8px',
+                        padding: '0.5rem',
+                        boxShadow: '0 4px 15px rgba(0,0,0,0.5)',
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(6, 1fr)',
+                        gap: '0.35rem',
+                        zIndex: 10000,
                       }}
-                    />
+                    >
+                      {['😊', '😂', '👍', '❤️', '🔥', '🎉', '🚀', '🤔', '🙌', '😎', '👀', '👏', '💯', '💻', '💡', '✨', '👋', '⭐'].map((emoji) => (
+                        <button
+                          key={emoji}
+                          type="button"
+                          onClick={() => handleAddEmoji(emoji)}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            fontSize: '1.1rem',
+                            cursor: 'pointer',
+                            padding: '0.2rem',
+                            borderRadius: '4px',
+                            transition: 'background-color 0.15s',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--surface-card-hover)'}
+                          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Chat Input form */}
+                  <form onSubmit={handleSendMessage} style={{ display: 'flex', gap: '0.35rem', position: 'relative' }}>
+                    <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
+                      <input
+                        ref={inputRef}
+                        type="text"
+                        value={inputVal}
+                        onChange={(e) => handleSelfTyping(e.target.value)}
+                        placeholder="Type a message..."
+                        style={{
+                          width: '100%',
+                          padding: '0.55rem',
+                          paddingRight: '2rem', // space for emoji smiley
+                          backgroundColor: 'var(--surface-input)',
+                          border: '1px solid var(--border-subtle)',
+                          borderRadius: '6px',
+                          color: 'var(--text-white)',
+                          outline: 'none',
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                        style={{
+                          position: 'absolute',
+                          right: '0.5rem',
+                          background: 'none',
+                          border: 'none',
+                          cursor: 'pointer',
+                          fontSize: '1rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          opacity: 0.7,
+                          transition: 'opacity 0.2s',
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                        onMouseLeave={(e) => e.currentTarget.style.opacity = '0.7'}
+                      >
+                        😊
+                      </button>
+                    </div>
                     <button
                       type="submit"
                       disabled={!inputVal.trim()}

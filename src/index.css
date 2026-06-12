@@ -296,6 +296,7 @@ body {
   right: 0;
   width: 320px;
   height: 440px;
+  max-height: calc(100dvh - 100px);
   display: flex;
   flex-direction: column;
   padding: 1.25rem;
@@ -316,7 +317,17 @@ body {
     width: calc(100vw - 3rem);
     max-width: 340px;
     height: 420px;
+    max-height: calc(100dvh - 90px);
     bottom: 52px;
   }
+}
+
+/* Prevent iOS auto-zoom on form inputs by ensuring font size is at least 16px */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  font-size: 16px !important;
 }
 
