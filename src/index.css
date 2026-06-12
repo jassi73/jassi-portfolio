@@ -365,4 +365,13 @@ select {
   font-size: 14.5px !important;
 }
 
+/* Muted and compact placeholders in the chat system */
+.chat-widget-window input::placeholder,
+.chat-widget-window textarea::placeholder,
+.chat-input-bar-container input::placeholder,
+.saas-card input::placeholder {
+  font-size: 12.5px !important;
+  opacity: 0.45;
+}
+
 
