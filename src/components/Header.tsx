@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function Header({ currentRoute = 'home' }: { currentRoute?: 'home' | 'blog' | 'blog-detail' | 'project-detail' }) {
+export default function Header({ currentRoute = 'home' }: { currentRoute?: 'home' | 'blog' | 'blog-detail' | 'project-detail' | 'chat-admin' }) {
   const [time, setTime] = useState('');
   const [lastScrollY, setLastScrollY] = useState(0);
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');

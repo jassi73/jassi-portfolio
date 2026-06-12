@@ -248,3 +248,75 @@ body {
 .code-function { color: #82aaff; }
 .code-comment { color: #546e7a; font-style: italic; }
 .code-tag { color: #ffcb6b; }
+
+/* Scroll to Top Button */
+.scroll-to-top-btn {
+  position: fixed;
+  bottom: 5.5rem;
+  right: 2rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 99;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.scroll-to-top-btn:hover {
+  border-color: var(--accent-purple);
+  background-color: var(--surface-card-hover);
+}
+
+@media (max-width: 768px) {
+  .scroll-to-top-btn {
+    bottom: 4.8rem;
+    right: 1.5rem;
+  }
+}
+
+/* Ephemeral Visitor Chat Widget Layout */
+.chat-widget-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  font-family: var(--font-sans);
+}
+
+.chat-widget-window {
+  position: absolute;
+  bottom: 56px;
+  right: 0;
+  width: 320px;
+  height: 440px;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+@media (max-width: 768px) {
+  .chat-widget-container {
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+  
+  .chat-widget-window {
+    width: calc(100vw - 3rem);
+    max-width: 340px;
+    height: 420px;
+    bottom: 52px;
+  }
+}
+
