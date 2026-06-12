@@ -1173,6 +1173,7 @@ export default function Projects() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [activeImage, setActiveImage] = useState<string | null>(null);
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
   // Browser hash-routing state synchronizer
   useEffect(() => {
@@ -1184,10 +1185,6 @@ export default function Projects() {
         if (found) {
           setSelectedProject(found);
           setActiveImage(found.image);
-          const projectsSection = document.getElementById('projects');
-          if (projectsSection) {
-            projectsSection.scrollIntoView({ behavior: 'smooth' });
-          }
         }
       } else {
         setSelectedProject(null);
@@ -1200,6 +1197,24 @@ export default function Projects() {
 
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
+
+  // Scroll to top when a project is selected
+  useEffect(() => {
+    if (selectedProject) {
+      window.scrollTo(0, 0);
+      if ((window as any).lenis) {
+        (window as any).lenis.scrollTo(0, { immediate: true });
+      }
+      // Set a small backup timeout because layout rendering/unmounting can take a couple of frames
+      const timer = setTimeout(() => {
+        window.scrollTo(0, 0);
+        if ((window as any).lenis) {
+          (window as any).lenis.scrollTo(0, { immediate: true });
+        }
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedProject?.id]);
 
   const openProject = (id: string) => {
     window.location.hash = `#project/${id}`;
@@ -1433,6 +1448,30 @@ export default function Projects() {
                     </div>
                   )}
 
+                  {/* System dataflow diagram */}
+                  <div className="saas-card" style={{ padding: '1.5rem', backgroundColor: 'var(--surface-card-darker)' }}>
+                    <h4 className="label-saas" style={{ fontSize: '0.65rem', color: 'var(--text-gray-muted)', marginBottom: '1.25rem' }}>
+                      SYSTEM DATAFLOW DIAGRAM
+                    </h4>
+                    {selectedProject.id === 'buildstorey' && (
+                      <InteractiveArchitecture />
+                    )}
+                    {selectedProject.id === 'school-erp' && (
+                      <ERPInteractiveArchitecture />
+                    )}
+                    {selectedProject.id === 'sudhaanva' && (
+                      <SudhaanvaInteractiveArchitecture />
+                    )}
+                    {selectedProject.id === 'cjpmedia' && (
+                      <CJPInteractiveArchitecture />
+                    )}
+                    {selectedProject.id !== 'buildstorey' && selectedProject.id !== 'school-erp' && selectedProject.id !== 'sudhaanva' && selectedProject.id !== 'cjpmedia' && (
+                      <div style={{ overflowX: 'auto' }}>
+                        {selectedProject.architecture}
+                      </div>
+                    )}
+                  </div>
+
                   {/* Mock Implementation Code Snippet */}
                   <div className="case-study-code-desktop">
                     <h4 className="label-saas" style={{ color: 'var(--text-gray-muted)', fontSize: '0.65rem', marginBottom: '1rem' }}>
@@ -1460,17 +1499,29 @@ export default function Projects() {
               </div>
 
               {/* Right Column: Visuals & Tech decisions */}
-              <div style={{ gridColumn: 'span 5' }} className="case-visual-col">
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+              <div 
+                className="case-visual-col"
+                style={{ 
+                  gridColumn: 'span 5',
+                  position: 'sticky',
+                  top: '100px',
+                  alignSelf: 'start'
+                }}
+              >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem', maxWidth: '380px', marginLeft: 'auto', marginRight: 'auto', width: '100%' }}>
                   
                   {/* Project image */}
                   <div
+                    onClick={() => setLightboxImage(activeImage || selectedProject.image)}
+                    className="interactive-element"
                     style={{
                       border: '1px solid var(--border-subtle)',
                       borderRadius: '12px',
                       padding: '0.75rem',
                       backgroundColor: 'var(--surface-card)',
                       boxShadow: '0 15px 30px rgba(0,0,0,0.5)',
+                      cursor: 'zoom-in',
+                      width: '100%',
                     }}
                   >
                     <img
@@ -1479,7 +1530,7 @@ export default function Projects() {
                       style={{
                         width: '100%',
                         height: 'auto',
-                        maxHeight: '420px',
+                        maxHeight: '220px',
                         borderRadius: '8px',
                         display: 'block',
                         objectFit: 'contain',
@@ -1515,30 +1566,6 @@ export default function Projects() {
                       ))}
                     </div>
                   )}
-
-                  {/* System dataflow diagram */}
-                  <div className="saas-card" style={{ padding: '1.5rem', backgroundColor: 'var(--surface-card-darker)' }}>
-                    <h4 className="label-saas" style={{ fontSize: '0.65rem', color: 'var(--text-gray-muted)', marginBottom: '1.25rem' }}>
-                      SYSTEM DATAFLOW DIAGRAM
-                    </h4>
-                    {selectedProject.id === 'buildstorey' && (
-                      <InteractiveArchitecture />
-                    )}
-                    {selectedProject.id === 'school-erp' && (
-                      <ERPInteractiveArchitecture />
-                    )}
-                    {selectedProject.id === 'sudhaanva' && (
-                      <SudhaanvaInteractiveArchitecture />
-                    )}
-                    {selectedProject.id === 'cjpmedia' && (
-                      <CJPInteractiveArchitecture />
-                    )}
-                    {selectedProject.id !== 'buildstorey' && selectedProject.id !== 'school-erp' && selectedProject.id !== 'sudhaanva' && selectedProject.id !== 'cjpmedia' && (
-                      <div style={{ overflowX: 'auto' }}>
-                        {selectedProject.architecture}
-                      </div>
-                    )}
-                  </div>
 
                   {/* Tech stack stack */}
                   <div>
@@ -2024,6 +2051,89 @@ export default function Projects() {
         )}
       </AnimatePresence>
 
+      {/* Lightbox photo modal */}
+      <AnimatePresence>
+        {lightboxImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setLightboxImage(null)}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(5, 5, 6, 0.95)',
+              backdropFilter: 'blur(10px)',
+              zIndex: 99999,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '2rem',
+              cursor: 'zoom-out',
+            }}
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setLightboxImage(null)}
+              style={{
+                position: 'absolute',
+                top: '1.5rem',
+                right: '1.5rem',
+                backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: '50%',
+                width: '40px',
+                height: '40px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--text-white)',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+              }}
+              className="interactive-element"
+            >
+              <svg width="18" height="18" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.854 3.146a.5.5 0 010 .708l-8 8a.5.5 0 01-.708-.708l8-8a.5.5 0 01.708 0zM3.146 3.146a.5.5 0 000 .708l8 8a.5.5 0 00.708-.708l-8-8a.5.5 0 00-.708 0z" fill="currentColor" />
+              </svg>
+            </button>
+
+            {/* Lightbox Image Container */}
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 15 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 15 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                maxWidth: '90%',
+                maxHeight: '85vh',
+                position: 'relative',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                boxShadow: '0 25px 50px rgba(0,0,0,0.8)',
+                border: '1px solid rgba(255,255,255,0.05)',
+                backgroundColor: '#0c0c0e',
+              }}
+            >
+              <img
+                src={lightboxImage}
+                alt="Enlarged Project Visual"
+                style={{
+                  display: 'block',
+                  maxWidth: '100%',
+                  maxHeight: '85vh',
+                  objectFit: 'contain',
+                }}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <style>{`
         .project-grid-card:hover .project-cover-img {
           transform: scale(1.05);
@@ -2046,6 +2156,8 @@ export default function Projects() {
             min-width: 0 !important;
             width: 100% !important;
             overflow: hidden !important;
+            position: relative !important;
+            top: auto !important;
           }
         }
         @media (max-width: 768px) {

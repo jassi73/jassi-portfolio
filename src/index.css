@@ -61,13 +61,13 @@ html {
   font-size: 16px;
   line-height: 1.5;
   scroll-behavior: auto; /* Handled by Lenis */
-  overflow-x: hidden;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
   background-color: var(--bg-dark);
   transition: background-color 0.3s ease;
 }

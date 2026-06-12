@@ -13,7 +13,7 @@ import Contact from './components/Contact';
 import Blog from './components/Blog';
 
 export default function App() {
-  const [route, setRoute] = useState<'home' | 'blog' | 'blog-detail'>('home');
+  const [route, setRoute] = useState<'home' | 'blog' | 'blog-detail' | 'project-detail'>('home');
   const [blogId, setBlogId] = useState<string | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -39,6 +39,10 @@ export default function App() {
         window.scrollTo({ top: 0 });
       } else if (hash === '#blog') {
         setRoute('blog');
+        setBlogId(null);
+        window.scrollTo({ top: 0 });
+      } else if (hash.startsWith('#project/')) {
+        setRoute('project-detail');
         setBlogId(null);
         window.scrollTo({ top: 0 });
       } else {
@@ -73,6 +77,7 @@ export default function App() {
       wheelMultiplier: 1.0,
       touchMultiplier: 1.5,
     });
+    (window as any).lenis = lenis;
 
     let rafId: number;
     const raf = (time: number) => {
@@ -83,6 +88,7 @@ export default function App() {
 
     // Cleanup scrolling on unmount
     return () => {
+      (window as any).lenis = null;
       lenis.destroy();
       cancelAnimationFrame(rafId);
     };
@@ -118,6 +124,8 @@ export default function App() {
             {/* Section 6: Contact & Footer */}
             <Contact />
           </>
+        ) : route === 'project-detail' ? (
+          <Projects />
         ) : (
           <Blog id={blogId} />
         )}
