@@ -425,9 +425,9 @@ export default function ChatWidget() {
                   transition={{ duration: 0.15 }}
                   style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.75rem', overflowY: 'auto', padding: '0.2rem', minHeight: 0 }}
                 >
-                  <div style={{ textAlign: 'center', marginBottom: '0.25rem' }}>
-                    <h5 style={{ color: 'var(--text-white)', fontSize: '0.85rem', fontWeight: 'bold' }}>Jassi is Offline</h5>
-                    <p style={{ fontSize: '0.7rem', color: 'var(--text-gray-muted)', marginTop: '0.2rem', lineHeight: 1.4 }}>
+                  <div style={{ textAlign: 'center', marginBottom: '0.2rem' }}>
+                    <h5 style={{ color: 'var(--text-white)', fontSize: '0.85rem', fontWeight: 'bold', margin: '0 0 0.15rem 0' }}>Jassi is Offline</h5>
+                    <p style={{ fontSize: '0.68rem', color: 'var(--text-gray-muted)', margin: 0, lineHeight: 1.35 }}>
                       Leave a message below. I will receive an instant email notification to connect!
                     </p>
                   </div>
@@ -449,9 +449,9 @@ export default function ChatWidget() {
                       </button>
                     </div>
                   ) : (
-                    <form onSubmit={handleOfflineSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                        <label style={{ fontSize: '0.58rem', color: 'var(--text-gray-muted)', fontFamily: 'var(--font-mono)' }}>NAME</label>
+                    <form onSubmit={handleOfflineSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
+                        <label style={{ fontSize: '0.55rem', color: 'var(--text-gray-muted)', fontFamily: 'var(--font-mono)' }}>NAME</label>
                         <input
                           type="text"
                           required
@@ -460,19 +460,19 @@ export default function ChatWidget() {
                           placeholder="Jane Doe"
                           style={{
                             width: '100%',
-                            padding: '0.55rem',
+                            padding: '0.45rem 0.55rem',
                             backgroundColor: 'var(--surface-input)',
                             border: '1px solid var(--border-subtle)',
                             borderRadius: '6px',
                             color: 'var(--text-white)',
                             outline: 'none',
-                            fontSize: '0.75rem',
+                            fontSize: '0.72rem',
                           }}
                         />
                       </div>
 
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                        <label style={{ fontSize: '0.58rem', color: 'var(--text-gray-muted)', fontFamily: 'var(--font-mono)' }}>EMAIL CONTACT</label>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
+                        <label style={{ fontSize: '0.55rem', color: 'var(--text-gray-muted)', fontFamily: 'var(--font-mono)' }}>EMAIL CONTACT</label>
                         <input
                           type="email"
                           required
@@ -481,42 +481,43 @@ export default function ChatWidget() {
                           placeholder="jane@example.com"
                           style={{
                             width: '100%',
-                            padding: '0.55rem',
+                            padding: '0.45rem 0.55rem',
                             backgroundColor: 'var(--surface-input)',
                             border: '1px solid var(--border-subtle)',
                             borderRadius: '6px',
                             color: 'var(--text-white)',
                             outline: 'none',
-                            fontSize: '0.75rem',
+                            fontSize: '0.72rem',
                           }}
                         />
                       </div>
 
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                        <label style={{ fontSize: '0.58rem', color: 'var(--text-gray-muted)', fontFamily: 'var(--font-mono)' }}>MESSAGE</label>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
+                        <label style={{ fontSize: '0.55rem', color: 'var(--text-gray-muted)', fontFamily: 'var(--font-mono)' }}>MESSAGE</label>
                         <textarea
                           required
-                          rows={3}
+                          rows={2}
                           value={offlineMsg}
                           onChange={(e) => setOfflineMsg(e.target.value)}
                           placeholder="Hey Jassi! I want to connect..."
                           style={{
                             width: '100%',
-                            padding: '0.55rem',
+                            padding: '0.45rem 0.55rem',
                             backgroundColor: 'var(--surface-input)',
                             border: '1px solid var(--border-subtle)',
                             borderRadius: '6px',
                             color: 'var(--text-white)',
                             outline: 'none',
-                            fontSize: '0.75rem',
+                            fontSize: '0.72rem',
                             resize: 'none',
                             fontFamily: 'var(--font-sans)',
+                            height: '52px',
                           }}
                         />
                       </div>
 
                       {submitError && (
-                        <div style={{ color: '#ff4d4d', fontSize: '0.65rem', fontFamily: 'var(--font-mono)' }}>
+                        <div style={{ color: '#ff4d4d', fontSize: '0.6rem', fontFamily: 'var(--font-mono)' }}>
                           {submitError}
                         </div>
                       )}
@@ -525,14 +526,14 @@ export default function ChatWidget() {
                         type="submit" 
                         disabled={isSubmitting}
                         className="btn-primary-glow" 
-                        style={{ width: '100%', justifyContent: 'center', height: '32px', fontSize: '0.72rem', marginTop: '0.25rem' }}
+                        style={{ width: '100%', justifyContent: 'center', height: '30px', fontSize: '0.7rem', marginTop: '0.15rem' }}
                       >
                         {isSubmitting ? 'Sending Request...' : 'Send Offline Message'}
                       </button>
                     </form>
                   )}
 
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', borderTop: '1px solid var(--border-subtle)', paddingTop: '0.6rem', marginTop: '0.25rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', borderTop: '1px solid var(--border-subtle)', paddingTop: '0.45rem', marginTop: '0.15rem' }}>
                     <button 
                       type="button"
                       onClick={startConnection}
@@ -540,7 +541,7 @@ export default function ChatWidget() {
                         background: 'none',
                         border: 'none',
                         color: 'var(--accent-purple)',
-                        fontSize: '0.68rem',
+                        fontSize: '0.65rem',
                         cursor: 'pointer',
                         fontWeight: 600,
                         textDecoration: 'underline'
