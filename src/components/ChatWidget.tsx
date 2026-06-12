@@ -603,13 +603,14 @@ export default function ChatWidget() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -5 }}
                   transition={{ duration: 0.15 }}
-                  style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
+                  style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}
                 >
                   {/* Message Thread */}
                   <div
                     style={{
                       flex: 1,
                       overflowY: 'auto',
+                      minHeight: 0,
                       padding: '0.35rem',
                       display: 'flex',
                       flexDirection: 'column',
