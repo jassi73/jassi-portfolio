@@ -1269,17 +1269,7 @@ export default function Projects() {
             style={{ position: 'relative', zIndex: 10 }}
           >
             {/* Header / Actions */}
-            <div
-              className="case-study-header"
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                borderBottom: '1px solid var(--border-subtle)',
-                gap: '1rem',
-                flexWrap: 'wrap'
-              }}
-            >
+            <div className="case-study-header">
               <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', alignItems: 'center' }}>
                 <button
                   onClick={closeProject}
@@ -1373,13 +1363,13 @@ export default function Projects() {
                     <h4 className="label-saas" style={{ color: 'var(--text-gray-muted)', fontSize: '0.65rem', marginBottom: '1rem' }}>
                       PERFORMANCE INDICATORS
                     </h4>
-                    <div className="performance-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
+                    <div className="performance-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem' }}>
                       {selectedProject.metrics.map((m, i) => (
-                        <div key={i} className="saas-card" style={{ padding: '1.25rem', textAlign: 'center', backgroundColor: 'var(--surface-card-darker)' }}>
-                          <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-white)' }}>
+                        <div key={i} className="saas-card" style={{ padding: '0.75rem', textAlign: 'center', backgroundColor: 'var(--surface-card-darker)' }}>
+                          <span style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-white)' }}>
                             {m.value}
                           </span>
-                          <span className="label-saas" style={{ display: 'block', fontSize: '0.65rem', marginTop: '0.5rem', color: 'var(--text-gray-light)' }}>
+                          <span className="label-saas" style={{ display: 'block', fontSize: '0.55rem', marginTop: '0.35rem', color: 'var(--text-gray-light)', letterSpacing: '0.1em' }}>
                             {m.label}
                           </span>
                         </div>
@@ -1405,7 +1395,7 @@ export default function Projects() {
                   </div>
 
                   {selectedProject.id === 'buildstorey' && (
-                    <div className="saas-card" style={{ padding: '1.5rem', backgroundColor: 'var(--surface-card-darker)', border: '1px solid rgba(255, 255, 255, 0.03)' }}>
+                    <div className="saas-card" style={{ padding: '1.1rem', backgroundColor: 'var(--surface-card-darker)', border: '1px solid rgba(255, 255, 255, 0.03)' }}>
                       <h4 className="label-saas" style={{ fontSize: '0.65rem', color: 'var(--accent-purple)', marginBottom: '1.25rem' }}>
                         SUPPLIER PORTAL & SELLER ONBOARDING FLOW
                       </h4>
@@ -1427,7 +1417,7 @@ export default function Projects() {
                   )}
 
                   {selectedProject.id === 'school-erp' && (
-                    <div className="saas-card" style={{ padding: '1.5rem', backgroundColor: 'var(--surface-card-darker)', border: '1px solid rgba(255, 255, 255, 0.03)' }}>
+                    <div className="saas-card" style={{ padding: '1.1rem', backgroundColor: 'var(--surface-card-darker)', border: '1px solid rgba(255, 255, 255, 0.03)' }}>
                       <h4 className="label-saas" style={{ fontSize: '0.65rem', color: 'var(--accent-purple)', marginBottom: '1.25rem' }}>
                         MONOREPO ERP MODULES & MOBILE ARCHITECTURE
                       </h4>
@@ -1448,29 +1438,6 @@ export default function Projects() {
                     </div>
                   )}
 
-                  {/* System dataflow diagram */}
-                  <div className="saas-card" style={{ padding: '1.5rem', backgroundColor: 'var(--surface-card-darker)' }}>
-                    <h4 className="label-saas" style={{ fontSize: '0.65rem', color: 'var(--text-gray-muted)', marginBottom: '1.25rem' }}>
-                      SYSTEM DATAFLOW DIAGRAM
-                    </h4>
-                    {selectedProject.id === 'buildstorey' && (
-                      <InteractiveArchitecture />
-                    )}
-                    {selectedProject.id === 'school-erp' && (
-                      <ERPInteractiveArchitecture />
-                    )}
-                    {selectedProject.id === 'sudhaanva' && (
-                      <SudhaanvaInteractiveArchitecture />
-                    )}
-                    {selectedProject.id === 'cjpmedia' && (
-                      <CJPInteractiveArchitecture />
-                    )}
-                    {selectedProject.id !== 'buildstorey' && selectedProject.id !== 'school-erp' && selectedProject.id !== 'sudhaanva' && selectedProject.id !== 'cjpmedia' && (
-                      <div style={{ overflowX: 'auto' }}>
-                        {selectedProject.architecture}
-                      </div>
-                    )}
-                  </div>
 
                   {/* Mock Implementation Code Snippet */}
                   <div className="case-study-code-desktop">
@@ -1498,17 +1465,16 @@ export default function Projects() {
                 </div>
               </div>
 
-              {/* Right Column: Visuals & Tech decisions */}
               <div 
                 className="case-visual-col"
                 style={{ 
                   gridColumn: 'span 5',
                   position: 'sticky',
-                  top: '100px',
+                  top: '160px',
                   alignSelf: 'start'
                 }}
               >
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem', maxWidth: '380px', marginLeft: 'auto', marginRight: 'auto', width: '100%' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', maxWidth: '380px', marginLeft: 'auto', marginRight: 'auto', width: '100%' }}>
                   
                   {/* Project image */}
                   <div
@@ -1566,6 +1532,30 @@ export default function Projects() {
                       ))}
                     </div>
                   )}
+
+                  {/* System dataflow diagram */}
+                  <div className="saas-card" style={{ padding: '1rem', backgroundColor: 'var(--surface-card-darker)' }}>
+                    <h4 className="label-saas" style={{ fontSize: '0.62rem', color: 'var(--text-gray-muted)', marginBottom: '1rem' }}>
+                      SYSTEM DATAFLOW DIAGRAM
+                    </h4>
+                    {selectedProject.id === 'buildstorey' && (
+                      <InteractiveArchitecture />
+                    )}
+                    {selectedProject.id === 'school-erp' && (
+                      <ERPInteractiveArchitecture />
+                    )}
+                    {selectedProject.id === 'sudhaanva' && (
+                      <SudhaanvaInteractiveArchitecture />
+                    )}
+                    {selectedProject.id === 'cjpmedia' && (
+                      <CJPInteractiveArchitecture />
+                    )}
+                    {selectedProject.id !== 'buildstorey' && selectedProject.id !== 'school-erp' && selectedProject.id !== 'sudhaanva' && selectedProject.id !== 'cjpmedia' && (
+                      <div style={{ overflowX: 'auto' }}>
+                        {selectedProject.architecture}
+                      </div>
+                    )}
+                  </div>
 
                   {/* Tech stack stack */}
                   <div>
@@ -2139,8 +2129,22 @@ export default function Projects() {
           transform: scale(1.05);
         }
         .case-study-header {
+          position: sticky;
+          top: 80px;
+          background-color: var(--bg-dark);
+          z-index: 80;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px solid var(--border-subtle);
+          gap: 1rem;
+          flex-wrap: wrap;
+          padding: 1.25rem 2rem;
+          margin-left: -2rem;
+          margin-right: -2rem;
+          margin-top: -1rem;
           margin-bottom: 3rem;
-          padding-bottom: 1.5rem;
+          transition: background-color 0.3s ease;
         }
         .case-study-banner {
           margin-bottom: 4rem;
@@ -2168,13 +2172,16 @@ export default function Projects() {
             justify-content: flex-start !important;
           }
           .case-study-header {
+            padding: 1rem 1.25rem !important;
+            margin-left: -1.25rem !important;
+            margin-right: -1.25rem !important;
             margin-bottom: 2rem !important;
-            padding-bottom: 1rem !important;
           }
           .case-study-banner {
             margin-bottom: 2rem !important;
           }
         }
+
         @media (max-width: 600px) {
           .performance-grid {
             grid-template-columns: 1fr !important;
