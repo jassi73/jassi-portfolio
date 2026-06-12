@@ -645,12 +645,15 @@ export default function ChatAdmin() {
                style={{ 
                  display: 'flex', 
                  alignItems: 'center', 
-                 gap: '0.55rem', 
+                 gap: '0.65rem', 
                  position: 'relative',
-                 backgroundColor: 'var(--surface-input)',
-                 border: '1px solid var(--border-subtle)',
+                 backgroundColor: 'rgba(20, 20, 24, 0.75)',
+                 backdropFilter: 'blur(12px)',
+                 WebkitBackdropFilter: 'blur(12px)',
+                 border: '1px solid rgba(255, 255, 255, 0.08)',
                  borderRadius: '24px',
-                 padding: '0.35rem 0.95rem 0.35rem 0.95rem',
+                 padding: '0.55rem 1.1rem 0.55rem 0.95rem',
+                 boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 4px 14px rgba(0, 0, 0, 0.25)',
                  transition: 'all 0.2s ease',
                  opacity: activeChat.online ? 1 : 0.6,
                }}
@@ -668,7 +671,7 @@ export default function ChatAdmin() {
                    display: 'flex',
                    alignItems: 'center',
                    justifyContent: 'center',
-                   color: isListening ? '#ff4d4d' : 'var(--text-gray-muted)',
+                   color: isListening ? '#ff4d4d' : 'rgba(255, 255, 255, 0.45)',
                    opacity: activeChat.online ? 1 : 0.3,
                    padding: '0.2rem',
                    transition: 'color 0.2s',
@@ -678,7 +681,7 @@ export default function ChatAdmin() {
                    if (activeChat.online && !isListening) e.currentTarget.style.color = 'var(--accent-purple)';
                  }}
                  onMouseLeave={(e) => {
-                   if (activeChat.online && !isListening) e.currentTarget.style.color = 'var(--text-gray-muted)';
+                   if (activeChat.online && !isListening) e.currentTarget.style.color = 'rgba(255, 255, 255, 0.45)';
                  }}
                >
                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -703,7 +706,8 @@ export default function ChatAdmin() {
                    color: 'var(--text-white)',
                    outline: 'none',
                    fontSize: '14.5px',
-                   padding: '0.25rem 0',
+                   padding: '0.3rem 0',
+                   lineHeight: '1.4',
                  }}
                />
 
@@ -714,8 +718,8 @@ export default function ChatAdmin() {
                  style={{
                    background: 'none',
                    border: 'none',
-                   color: (activeChat.online && replyText.trim()) ? 'var(--accent-purple)' : 'var(--text-gray-muted)',
-                   opacity: (activeChat.online && replyText.trim()) ? 1 : 0.4,
+                   color: (activeChat.online && replyText.trim()) ? 'var(--accent-purple)' : 'rgba(255, 255, 255, 0.25)',
+                   opacity: (activeChat.online && replyText.trim()) ? 1 : 0.5,
                    display: 'flex',
                    alignItems: 'center',
                    justifyContent: 'center',
@@ -726,7 +730,7 @@ export default function ChatAdmin() {
                  onMouseEnter={(e) => {
                    if (activeChat.online && replyText.trim()) {
                      e.currentTarget.style.color = '#6942ff';
-                     e.currentTarget.style.transform = 'scale(1.1)';
+                     e.currentTarget.style.transform = 'scale(1.15)';
                    }
                  }}
                  onMouseLeave={(e) => {

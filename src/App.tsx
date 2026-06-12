@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Lenis from 'lenis';
 
@@ -18,6 +18,7 @@ export default function App() {
   const [route, setRoute] = useState<'home' | 'blog' | 'blog-detail' | 'project-detail' | 'chat-admin'>('home');
   const [blogId, setBlogId] = useState<string | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const isFirstLoad = useRef(true);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,6 +56,11 @@ export default function App() {
         setRoute('home');
         setBlogId(null);
         if (hash) {
+          if (isFirstLoad.current) {
+            isFirstLoad.current = false;
+            window.scrollTo({ top: 0 });
+            return;
+          }
           const targetId = hash.replace('#', '');
           setTimeout(() => {
             const element = document.getElementById(targetId);
@@ -64,6 +70,7 @@ export default function App() {
           }, 150);
         }
       }
+      isFirstLoad.current = false;
     };
 
     window.addEventListener('hashchange', handleHashChange);
