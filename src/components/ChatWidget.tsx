@@ -423,7 +423,7 @@ export default function ChatWidget() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -5 }}
                   transition={{ duration: 0.15 }}
-                  style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.75rem', overflowY: 'auto', padding: '0.2rem' }}
+                  style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.75rem', overflowY: 'auto', padding: '0.2rem', minHeight: 0 }}
                 >
                   <div style={{ textAlign: 'center', marginBottom: '0.25rem' }}>
                     <h5 style={{ color: 'var(--text-white)', fontSize: '0.85rem', fontWeight: 'bold' }}>Jassi is Offline</h5>
@@ -560,7 +560,7 @@ export default function ChatWidget() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -5 }}
                   transition={{ duration: 0.15 }}
-                  style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '1rem' }}
+                  style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '1rem', minHeight: 0, overflowY: 'auto', padding: '0.2rem' }}
                 >
                   <form onSubmit={handleJoinChat} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <div style={{ textAlign: 'center', marginBottom: '0.5rem' }}>
