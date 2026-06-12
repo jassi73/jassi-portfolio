@@ -689,7 +689,7 @@ export default function ChatWidget() {
                       WebkitBackdropFilter: 'blur(12px)',
                       border: '1px solid rgba(255, 255, 255, 0.08)',
                       borderRadius: '24px',
-                      padding: '0.55rem 1.1rem 0.55rem 0.95rem',
+                      padding: '0.55rem 0.95rem',
                       boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 4px 14px rgba(0, 0, 0, 0.25)',
                       transition: 'all 0.2s ease',
                     }}
