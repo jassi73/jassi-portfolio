@@ -213,6 +213,16 @@ function AIChatDemo() {
       response: "Jassi built an AI Assistant Platform with LangChain agents and FastAPI. By adding a semantic embedding cache running on Qdrant DB, he saved 35% on OpenAI API costs and achieved 4ms cache hit retrieval speeds."
     },
     {
+      id: 'sudhaanva',
+      keywords: ['sudhaanva', 'ayurveda', 'ayurvedic', 'health', 'consultation', 'exercise', 'sanity', 'cms', 'lovable', 'chatgpt'],
+      response: "Jassi designed and engineered Sudhaanva (https://sudhaanva.in/), a premium Ayurvedic health improvement and exercise consultation platform. Built with Next.js, Tailwind CSS, and Framer Motion for organic animations, the site leverages Sanity CMS for flexible structured content, incorporates Google Analytics & advanced SEO (99/100 Lighthouse), and is hosted/deployed on Lovable's cloud platform."
+    },
+    {
+      id: 'cjp_media',
+      keywords: ['cjp', 'cjpmedia', 'cockroach', 'janta', 'party', 'media', 'news', 'articles', 'community', 'supabase', 'bolt.io', 'claude', 'antigravity', 'vercel', 'subscriber'],
+      response: "Jassi designed and engineered the CJP Media news and community portal (https://www.cjpmedia.in/). The stack features Next.js, Tailwind CSS, Framer Motion, a Supabase backend for real-time article pipelines, email newsletter subscriptions, and Vercel edge deployment. He accelerated coding using Bolt.io, Claude AI, and Antigravity, while styling custom interfaces designed in Figma and Stitch."
+    },
+    {
       id: 'contact',
       keywords: ['contact', 'email', 'hire', 'jessparihar73@gmail.com', 'github', 'linkedin', 'social', 'resume', 'cv', 'reach', 'message'],
       response: "You can contact Jassi at jessparihar73@gmail.com. His location is Pune, Maharashtra, India (IST timezone). You can find him on GitHub at @jassi73, or send a direct coordinate message through the Contact section form at the bottom of this page!"
@@ -262,6 +272,8 @@ function AIChatDemo() {
       if (fact.id === 'buildstorey' && query.includes('buildstorey')) score += 5;
       if (fact.id === 'school_erp' && (query.includes('erp') || query.includes('school'))) score += 5;
       if (fact.id === 'ai_platform' && (query.includes('platform') || query.includes('assistant'))) score += 5;
+      if (fact.id === 'sudhaanva' && (query.includes('sudhaanva') || query.includes('ayurveda') || query.includes('health'))) score += 5;
+      if (fact.id === 'cjp_media' && (query.includes('cjp') || query.includes('cjpmedia') || query.includes('cockroach') || query.includes('media') || query.includes('news'))) score += 5;
       if (fact.id === 'blogs' && (query.includes('blog') || query.includes('article') || query.includes('post'))) score += 5;
 
       if (score > highestScore) {
@@ -276,7 +288,7 @@ function AIChatDemo() {
     } else {
       matchedAnswer = `I recognize your query, but my database lacks a direct index for those terms. Jassi's cognitive index covers:
 • **Technical Expertise**: Ask about 'frontend', 'backend', 'skills', or 'AI tools'.
-• **Projects**: Ask about 'Buildstorey', 'School ERP', or the 'AI Assistant'.
+• **Projects**: Ask about 'Buildstorey', 'School ERP', 'AI Assistant', 'Sudhaanva', or 'CJP Media'.
 • **Background**: Ask about his 'experience', 'jobs', or 'bio'.
 • **Articles**: Ask about 'blogs' or 'posts'.
 • **Direct Link**: Ask about 'contact' or 'email'.

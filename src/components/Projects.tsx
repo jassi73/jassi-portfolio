@@ -16,6 +16,7 @@ interface CaseStudy {
   codeSnippet: string;
   codeLanguage: string;
   metrics: { label: string; value: string }[];
+  liveUrl?: string;
 }
 
 const caseStudiesData: CaseStudy[] = [
@@ -118,6 +119,7 @@ export default function MaterialCatalog({ products, categoryName }: any) {
     title: 'School ERP Platform',
     subtitle: 'Vast Multi-Module Educational ERP System (ELERN)',
     image: '/assets/school_erp_login.png',
+    liveUrl: 'https://school.elern.io/',
     gallery: [
       '/assets/school_erp_login.png',
       '/assets/school_erp_student.png',
@@ -260,6 +262,158 @@ class SemanticCache:
         <path d="M272 35 V70 H165 V65" stroke="rgba(255,255,255,0.2)" strokeWidth="1" fill="none"/>
         <text x="105" y="38" fill="var(--accent-purple)" fontSize="8" fontFamily="monospace" textAnchor="middle">SSE</text>
         <text x="225" y="22" fill="rgba(255,255,255,0.4)" fontSize="8" fontFamily="monospace" textAnchor="middle">RAG</text>
+      </svg>
+    )
+  },
+  {
+    id: 'sudhaanva',
+    number: '04',
+    title: 'Sudhaanva',
+    subtitle: 'Premium Ayurvedic Healthcare & Consultation Platform',
+    image: '/assets/sudhaanva_journey.png',
+    liveUrl: 'https://sudhaanva.in/',
+    gallery: [
+      '/assets/sudhaanva_journey.png',
+      '/assets/sudhaanva_consultation_form.png',
+      '/assets/sudhaanva_meditation.png'
+    ],
+    challenge: 'Designing an intuitive wellness interface that bridges traditional Ayurvedic health practices with modern scientific exercise consultations, while ensuring seamless client onboarding, content publishing through Sanity CMS, and robust search engine visibility.',
+    solution: 'Engineered a high-performance Next.js application with Tailwind CSS and Framer Motion for premium, organic animations. Built a flexible schema in Sanity CMS to manage health blogs, dietary consults, and exercise regimes. Integrated Google Analytics for tracking user behavior and implemented advanced metadata optimization for local/global SEO, deploying the entire setup on Lovable.',
+    impact: 'Delivered a premium digital experience with a 99/100 Google Lighthouse SEO score, successfully connecting clients with Ayurvedic experts and organic exercise programs.',
+    tech: ['Next.js', 'React', 'Tailwind CSS', 'Framer Motion', 'Sanity CMS', 'Google Analytics', 'SEO', 'Lovable', 'ChatGPT'],
+    metrics: [
+      { label: 'SEO PERFORMANCE', value: '99/100' },
+      { label: 'LOAD TIME', value: '1.2s' },
+      { label: 'CMS CHANNELS', value: 'Sanity' }
+    ],
+    codeLanguage: 'typescript',
+    codeSnippet: `// Next.js static paths generation for Ayurvedic health articles via Sanity CMS
+import { createClient } from 'next-sanity';
+
+const client = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  dataset: 'production',
+  apiVersion: '2026-06-11',
+  useCdn: true
+});
+
+export async function getStaticPaths() {
+  const query = \`*[_type == "article"]{ "slug": slug.current }\`;
+  const articles = await client.fetch(query);
+  const paths = articles.map((article: any) => ({
+    params: { slug: article.slug }
+  }));
+
+  return { paths, fallback: 'blocking' };
+}
+
+export async function getStaticProps({ params }: any) {
+  const query = \`*[_type == "article" && slug.current == $slug][0]{
+    title,
+    body,
+    seoTitle,
+    seoDescription,
+    "imageUrl": mainImage.asset->url
+  }\`;
+  const article = await client.fetch(query, { slug: params.slug });
+
+  return {
+    props: { article },
+    revalidate: 60 // Incremental Static Regeneration (ISR)
+  };
+}`,
+    architecture: (
+      <svg width="100%" height="90" viewBox="0 0 400 90" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', maxWidth: '400px' }}>
+        <rect x="10" y="25" width="80" height="40" rx="4" fill="#0C0C0E" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
+        <text x="50" y="49" fill="#FFFFFF" fontSize="9" fontFamily="monospace" textAnchor="middle">Sanity CMS</text>
+        <rect x="120" y="25" width="90" height="40" rx="4" fill="#0C0C0E" stroke="var(--accent-purple)" strokeWidth="1"/>
+        <text x="165" y="49" fill="#FFFFFF" fontSize="9" fontFamily="monospace" textAnchor="middle">Next.js SSR</text>
+        <rect x="240" y="25" width="70" height="40" rx="4" fill="#0C0C0E" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
+        <text x="275" y="49" fill="#FFFFFF" fontSize="9" fontFamily="monospace" textAnchor="middle">SEO Engine</text>
+        <rect x="325" y="25" width="65" height="40" rx="4" fill="#0C0C0E" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
+        <text x="357" y="49" fill="#FFFFFF" fontSize="9" fontFamily="monospace" textAnchor="middle">Lovable Host</text>
+        <path d="M90 45H120" stroke="var(--accent-purple)" strokeWidth="1.5"/>
+        <path d="M210 45H240" stroke="rgba(255,255,255,0.2)" strokeWidth="1"/>
+        <path d="M310 45H325" stroke="var(--accent-purple)" strokeWidth="1.5"/>
+        <text x="105" y="38" fill="var(--accent-purple)" fontSize="8" fontFamily="monospace" textAnchor="middle">GROQ</text>
+        <text x="225" y="38" fill="rgba(255,255,255,0.4)" fontSize="8" fontFamily="monospace" textAnchor="middle">JSON-LD</text>
+      </svg>
+    )
+  },
+  {
+    id: 'cjpmedia',
+    number: '05',
+    title: 'CJP Media',
+    subtitle: 'Cockroach Janta Party Media & Community Portal',
+    image: '/assets/cjpmedia_homepage.png',
+    liveUrl: 'https://www.cjpmedia.in/',
+    gallery: [
+      '/assets/cjpmedia_homepage.png',
+      '/assets/cjpmedia_opinions.png',
+      '/assets/cjpmedia_article.png',
+      '/assets/cjpmedia_national.png'
+    ],
+    challenge: 'Building a community news and article publishing engine from scratch, requiring instant load times, structured real-time SEO validation for authors, subscriber list sync, and robust relational data storage.',
+    solution: 'Designed in Figma/Stitch and developed using Bolt.io, Next.js, and Supabase. Crafted an AI-assisted article composition system using Claude AI that evaluates SEO readability and scores keyword density in real-time. Configured Supabase database engines for article indexing and user logins, running a transactional email system for newsletter subscribers, deployed on Vercel.',
+    impact: 'Launched a modern news hub with real-time subscriber sync, automated article SEO reports, and lightning-fast edge rendering.',
+    tech: ['Next.js', 'React', 'Tailwind CSS', 'Framer Motion', 'Supabase', 'Email Subscriber', 'Figma', 'Stitch', 'Bolt.io', 'Claude AI', 'Antigravity'],
+    metrics: [
+      { label: 'SUBSCRIBERS SYNC', value: 'Real-time' },
+      { label: 'ARTICLE SEO SCORE', value: 'Dynamic' },
+      { label: 'DEPLOYMENT EDGE', value: 'Vercel' }
+    ],
+    codeLanguage: 'typescript',
+    codeSnippet: `// Supabase real-time database listener & real-time SEO checker widget in Next.js
+import { createClient } from '@supabase/supabase-js';
+import { useState, useEffect } from 'react';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
+export function useRealtimeArticles() {
+  const [articles, setArticles] = useState<any[]>([]);
+
+  useEffect(() => {
+    // Fetch initial articles list
+    supabase.from('articles')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .then(({ data }) => data && setArticles(data));
+
+    // Subscribe to real-time database updates
+    const channel = supabase
+      .channel('article_updates')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'articles' }, 
+        (payload) => {
+          setArticles((prev) => [payload.new, ...prev]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  return articles;
+}`,
+    architecture: (
+      <svg width="100%" height="90" viewBox="0 0 400 90" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', maxWidth: '400px' }}>
+        <rect x="10" y="25" width="80" height="40" rx="4" fill="#0C0C0E" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
+        <text x="50" y="49" fill="#FFFFFF" fontSize="9" fontFamily="monospace" textAnchor="middle">Figma Design</text>
+        <rect x="120" y="25" width="90" height="40" rx="4" fill="#0C0C0E" stroke="var(--accent-purple)" strokeWidth="1"/>
+        <text x="165" y="49" fill="#FFFFFF" fontSize="9" fontFamily="monospace" textAnchor="middle">Next.js Front</text>
+        <rect x="240" y="25" width="70" height="40" rx="4" fill="#0C0C0E" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
+        <text x="275" y="49" fill="#FFFFFF" fontSize="9" fontFamily="monospace" textAnchor="middle">Supabase DB</text>
+        <rect x="325" y="25" width="65" height="40" rx="4" fill="#0C0C0E" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
+        <text x="357" y="49" fill="#FFFFFF" fontSize="9" fontFamily="monospace" textAnchor="middle">Vercel Edge</text>
+        <path d="M90 45H120" stroke="var(--accent-purple)" strokeWidth="1.5"/>
+        <path d="M210 45H240" stroke="rgba(255,255,255,0.2)" strokeWidth="1"/>
+        <path d="M310 45H325" stroke="var(--accent-purple)" strokeWidth="1.5"/>
+        <text x="105" y="38" fill="var(--accent-purple)" fontSize="8" fontFamily="monospace" textAnchor="middle">Stitch UI</text>
+        <text x="225" y="38" fill="rgba(255,255,255,0.4)" fontSize="8" fontFamily="monospace" textAnchor="middle">SQL Realtime</text>
       </svg>
     )
   }
@@ -643,6 +797,376 @@ function ERPInteractiveArchitecture() {
   );
 }
 
+function SudhaanvaInteractiveArchitecture() {
+  const [activeStep, setActiveStep] = useState<number>(0);
+
+  const steps = [
+    {
+      title: "1. Sanity CMS",
+      subtitle: "Ayurveda Schemas",
+      icon: (
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <ellipse cx="12" cy="5" rx="9" ry="3"/>
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5M3 12c0 1.66 4 3 9 3s9-1.34 9-3" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      ),
+      label: "SANITY CMS GRAPHQL CORE",
+      desc: "Designed flexible schemas for organic herbs, recipes, dietary guidelines, and consultation sessions. Enabled content editors to update blogs and programs dynamically via a secure Sanity workspace.",
+      tech: "Sanity.io, GROQ queries, structured content CDN, Next.js ISR"
+    },
+    {
+      title: "2. Next.js & Tailwind",
+      subtitle: "Framer Motion Animations",
+      icon: (
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="2" y="3" width="20" height="14" rx="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M8 21h8M12 17v4" strokeLinecap="round"/>
+        </svg>
+      ),
+      label: "NEXT.JS FRONTEND EXPERIENCE",
+      desc: "Developed a stunning, modern, responsive landing page and dashboard interface styled with Tailwind CSS. Integrated custom Framer Motion page transitions, parallax scroll effects, and organic hover micro-interactions.",
+      tech: "Next.js App Router, React 18, Tailwind CSS, Framer Motion animations"
+    },
+    {
+      title: "3. SEO & Analytics",
+      subtitle: "Lighthouse 99",
+      icon: (
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          <path d="M2 12h20"/>
+        </svg>
+      ),
+      label: "METADATA & VISITOR PIPELINE",
+      desc: "Implemented clean JSON-LD structured data for health consult services, achieving a 99/100 Lighthouse SEO score. Integrated Google Analytics 4 for tracking user conversion funnels.",
+      tech: "Google Analytics 4, JSON-LD Schema, Next.js Metadata API, dynamic meta tags"
+    },
+    {
+      title: "4. Lovable Cloud",
+      subtitle: "CI/CD Deployment",
+      icon: (
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      ),
+      label: "LOVABLE CLOUD INFRASTRUCTURE",
+      desc: "Deployed the application on Lovable's specialized hosting server, achieving extremely fast response times globally. Configured custom domain routing and SSL certificates with auto-scaling DNS.",
+      tech: "Lovable Server, Edge CDN, custom domain routing, SSL encryption"
+    }
+  ];
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', width: '100%', padding: '0' }}>
+      <div 
+        style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between', 
+          gap: '0.45rem', 
+          position: 'relative',
+          padding: '0.2rem 0.5rem',
+          overflowX: 'auto',
+          maxWidth: '380px',
+          margin: '0 auto',
+          width: '100%'
+        }}
+        className="no-scrollbar arch-flow-container"
+      >
+        <div 
+          className="arch-connection-line"
+          style={{ 
+            position: 'absolute', 
+            top: '50%', 
+            left: '42px', 
+            right: '42px', 
+            height: '1px', 
+            background: 'linear-gradient(to right, var(--accent-purple) 0%, rgba(255,255,255,0.03) 100%)',
+            zIndex: 0,
+            pointerEvents: 'none'
+          }} 
+        />
+
+        {steps.map((step, idx) => {
+          const isActive = activeStep === idx;
+          return (
+            <div
+              key={idx}
+              onClick={() => setActiveStep(idx)}
+              className="interactive-element arch-flow-node"
+              style={{
+                position: 'relative',
+                zIndex: 5,
+                flex: '1 1 auto',
+                minWidth: '55px',
+                maxWidth: '80px',
+                backgroundColor: isActive ? 'var(--surface-card-hover)' : 'var(--surface-card)',
+                border: isActive ? '1px solid var(--accent-purple)' : '1px solid var(--border-subtle)',
+                borderRadius: '4px',
+                padding: '0.3rem 0.35rem',
+                textAlign: 'center',
+                cursor: 'pointer',
+                boxShadow: isActive ? '0 0 10px rgba(124, 92, 255, 0.15)' : 'none',
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                transform: isActive ? 'scale(1.02)' : 'scale(1)',
+              }}
+            >
+              <div 
+                style={{ 
+                  color: isActive ? 'var(--accent-purple)' : 'var(--text-gray-muted)',
+                  marginBottom: '0.1rem',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  transition: 'color 0.3s'
+                }}
+              >
+                {step.icon}
+              </div>
+
+              <div 
+                className="arch-flow-node-title"
+                style={{ 
+                  fontSize: '0.58rem', 
+                  fontWeight: 700, 
+                  color: isActive ? 'var(--text-white)' : 'var(--text-gray-light)',
+                  transition: 'color 0.3s',
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                {step.title}
+              </div>
+
+              <div 
+                className="arch-flow-node-subtitle"
+                style={{ fontSize: '0.41rem', color: 'var(--text-gray-muted)', marginTop: '0.05rem', whiteSpace: 'nowrap' }}
+              >
+                {step.subtitle}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeStep}
+          initial={{ opacity: 0, y: 3 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -3 }}
+          transition={{ duration: 0.15, ease: 'easeInOut' }}
+          className="saas-card"
+          style={{
+            padding: '0.45rem 0.6rem',
+            backgroundColor: 'var(--surface-card-darker)',
+            border: '1px solid var(--border-subtle)',
+            borderRadius: '4px',
+            boxShadow: 'none'
+          }}
+        >
+          <span className="label-saas" style={{ fontSize: '0.45rem', color: 'var(--accent-purple)', display: 'block', marginBottom: '0.1rem' }}>
+            {steps[activeStep].label}
+          </span>
+          <h4 style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-white)', marginBottom: '0.15rem' }}>
+            {steps[activeStep].title} Details
+          </h4>
+          <p style={{ fontSize: '0.65rem', color: 'var(--text-gray-light)', lineHeight: 1.2, marginBottom: '0.25rem' }}>
+            {steps[activeStep].desc}
+          </p>
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.03)', paddingTop: '0.2rem', display: 'flex', gap: '0.25rem', flexWrap: 'wrap', alignItems: 'center' }}>
+            <span className="label-saas" style={{ fontSize: '0.4rem', color: 'var(--text-gray-dark)' }}>TECHNOLOGY:</span>
+            <span style={{ fontSize: '0.58rem', fontFamily: 'var(--font-mono)', color: 'var(--accent-purple)' }}>
+              {steps[activeStep].tech}
+            </span>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function CJPInteractiveArchitecture() {
+  const [activeStep, setActiveStep] = useState<number>(0);
+
+  const steps = [
+    {
+      title: "1. Stitch & Figma",
+      subtitle: "Visual Designing",
+      icon: (
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M12 20h9M3 20v-8a2 2 0 012-2h4M3 12h6M12 4h6a2 2 0 012 2v4M12 12h8" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      ),
+      label: "STITCH & FIGMA WORKSPACE",
+      desc: "Designed components and media platform wireframes inside Stitch and Figma. Established grid layout guidelines for community articles, subscriber dashboards, and dark mode UI aesthetics.",
+      tech: "Figma layouts, Stitch token sets, mobile responsive grids"
+    },
+    {
+      title: "2. Bolt & Claude",
+      subtitle: "AI Development",
+      icon: (
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      ),
+      label: "AI-SPEED CODING WORKFLOW",
+      desc: "Leveraged Bolt.io, Claude AI, and Antigravity to generate high-performance frontend components. Speed up production workflows by auto-generating structured page blocks and form states.",
+      tech: "Bolt.io, Claude AI templates, Antigravity pair coding CLI"
+    },
+    {
+      title: "3. Next.js Front",
+      subtitle: "Real-time SEO",
+      icon: (
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="2" y="3" width="20" height="14" rx="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M8 21h8M12 17v4" strokeLinecap="round"/>
+        </svg>
+      ),
+      label: "INTERACTIVE NEWS HUB FRONTEND",
+      desc: "Developed news feed feeds and subscriber portals using Next.js App Router, Tailwind CSS, and Framer Motion. Engineered a custom post creation engine showing real-time on-page SEO reports.",
+      tech: "Next.js App Router, Tailwind CSS, Framer Motion, real-time SEO scoring"
+    },
+    {
+      title: "4. Supabase DB",
+      subtitle: "Real-time Backend",
+      icon: (
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <ellipse cx="12" cy="5" rx="9" ry="3"/>
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5M3 12c0 1.66 4 3 9 3s9-1.34 9-3" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      ),
+      label: "SUPABASE BACKEND & VERCEL EDGE",
+      desc: "Integrated Supabase for database storage of news articles, and structured email newsletter registration listeners. Deployed on Vercel's global CDN network.",
+      tech: "Supabase Database, PostgreSQL triggers, Vercel edge deployment, email APIs"
+    }
+  ];
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', width: '100%', padding: '0' }}>
+      <div 
+        style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between', 
+          gap: '0.45rem', 
+          position: 'relative',
+          padding: '0.2rem 0.5rem',
+          overflowX: 'auto',
+          maxWidth: '380px',
+          margin: '0 auto',
+          width: '100%'
+        }}
+        className="no-scrollbar arch-flow-container"
+      >
+        <div 
+          className="arch-connection-line"
+          style={{ 
+            position: 'absolute', 
+            top: '50%', 
+            left: '42px', 
+            right: '42px', 
+            height: '1px', 
+            background: 'linear-gradient(to right, var(--accent-purple) 0%, rgba(255,255,255,0.03) 100%)',
+            zIndex: 0,
+            pointerEvents: 'none'
+          }} 
+        />
+
+        {steps.map((step, idx) => {
+          const isActive = activeStep === idx;
+          return (
+            <div
+              key={idx}
+              onClick={() => setActiveStep(idx)}
+              className="interactive-element arch-flow-node"
+              style={{
+                position: 'relative',
+                zIndex: 5,
+                flex: '1 1 auto',
+                minWidth: '55px',
+                maxWidth: '80px',
+                backgroundColor: isActive ? 'var(--surface-card-hover)' : 'var(--surface-card)',
+                border: isActive ? '1px solid var(--accent-purple)' : '1px solid var(--border-subtle)',
+                borderRadius: '4px',
+                padding: '0.3rem 0.35rem',
+                textAlign: 'center',
+                cursor: 'pointer',
+                boxShadow: isActive ? '0 0 10px rgba(124, 92, 255, 0.15)' : 'none',
+                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                transform: isActive ? 'scale(1.02)' : 'scale(1)',
+              }}
+            >
+              <div 
+                style={{ 
+                  color: isActive ? 'var(--accent-purple)' : 'var(--text-gray-muted)',
+                  marginBottom: '0.1rem',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  transition: 'color 0.3s'
+                }}
+              >
+                {step.icon}
+              </div>
+
+              <div 
+                className="arch-flow-node-title"
+                style={{ 
+                  fontSize: '0.58rem', 
+                  fontWeight: 700, 
+                  color: isActive ? 'var(--text-white)' : 'var(--text-gray-light)',
+                  transition: 'color 0.3s',
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                {step.title}
+              </div>
+
+              <div 
+                className="arch-flow-node-subtitle"
+                style={{ fontSize: '0.41rem', color: 'var(--text-gray-muted)', marginTop: '0.05rem', whiteSpace: 'nowrap' }}
+              >
+                {step.subtitle}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeStep}
+          initial={{ opacity: 0, y: 3 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -3 }}
+          transition={{ duration: 0.15, ease: 'easeInOut' }}
+          className="saas-card"
+          style={{
+            padding: '0.45rem 0.6rem',
+            backgroundColor: 'var(--surface-card-darker)',
+            border: '1px solid var(--border-subtle)',
+            borderRadius: '4px',
+            boxShadow: 'none'
+          }}
+        >
+          <span className="label-saas" style={{ fontSize: '0.45rem', color: 'var(--accent-purple)', display: 'block', marginBottom: '0.1rem' }}>
+            {steps[activeStep].label}
+          </span>
+          <h4 style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-white)', marginBottom: '0.15rem' }}>
+            {steps[activeStep].title} Details
+          </h4>
+          <p style={{ fontSize: '0.65rem', color: 'var(--text-gray-light)', lineHeight: 1.2, marginBottom: '0.25rem' }}>
+            {steps[activeStep].desc}
+          </p>
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.03)', paddingTop: '0.2rem', display: 'flex', gap: '0.25rem', flexWrap: 'wrap', alignItems: 'center' }}>
+            <span className="label-saas" style={{ fontSize: '0.4rem', color: 'var(--text-gray-dark)' }}>TECHNOLOGY:</span>
+            <span style={{ fontSize: '0.58rem', fontFamily: 'var(--font-mono)', color: 'var(--accent-purple)' }}>
+              {steps[activeStep].tech}
+            </span>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<CaseStudy | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -694,10 +1218,10 @@ export default function Projects() {
 
     if (selectedCategory === 'ALL') return matchesSearch;
     if (selectedCategory === 'FRONTEND') {
-      return matchesSearch && project.tech.some(t => ['react', 'typescript', 'next.js', 'vite', 'canvas', 'css'].includes(t.toLowerCase()));
+      return matchesSearch && project.tech.some(t => ['react', 'typescript', 'next.js', 'vite', 'canvas', 'css', 'tailwind css', 'framer motion'].includes(t.toLowerCase()));
     }
     if (selectedCategory === 'BACKEND') {
-      return matchesSearch && project.tech.some(t => ['node.js', 'redis', 'postgresql', 'docker', 'aws'].includes(t.toLowerCase()));
+      return matchesSearch && project.tech.some(t => ['node.js', 'redis', 'postgresql', 'docker', 'aws', 'supabase', 'sanity cms'].includes(t.toLowerCase()));
     }
     if (selectedCategory === 'AI') {
       return matchesSearch && project.tech.some(t => ['python', 'langchain', 'qdrant db', 'openai', 'vector'].includes(t.toLowerCase()));
@@ -737,24 +1261,57 @@ export default function Projects() {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 borderBottom: '1px solid var(--border-subtle)',
+                gap: '1rem',
+                flexWrap: 'wrap'
               }}
             >
-              <button
-                onClick={closeProject}
-                className="interactive-element btn-secondary-border"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.5rem 1rem',
-                  fontSize: '0.8rem',
-                }}
-              >
-                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M6.85355 3.14645C7.04882 3.34171 7.04882 3.65829 6.85355 3.85355L3.70711 7H12.5C12.7761 7 13 7.22386 13 7.5C13 7.77614 12.7761 8 12.5 8H3.70711L6.85355 11.1464C7.04882 11.3417 7.04882 11.6583 6.85355 11.8536C6.65829 12.0488 6.34171 12.0488 6.14645 11.8536L2.14645 7.85355C1.95118 7.65829 1.95118 7.34171 2.14645 7.14645L6.14645 3.14645C6.34171 2.95118 6.65829 2.95118 6.85355 3.14645Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"/>
-                </svg>
-                <span>Back to Projects</span>
-              </button>
+              <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                <button
+                  onClick={closeProject}
+                  className="interactive-element btn-secondary-border"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.5rem 1rem',
+                    fontSize: '0.8rem',
+                  }}
+                >
+                  <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.85355 3.14645C7.04882 3.34171 7.04882 3.65829 6.85355 3.85355L3.70711 7H12.5C12.7761 7 13 7.22386 13 7.5C13 7.77614 12.7761 8 12.5 8H3.70711L6.85355 11.1464C7.04882 11.3417 7.04882 11.6583 6.85355 11.8536C6.65829 12.0488 6.34171 12.0488 6.14645 11.8536L2.14645 7.85355C1.95118 7.65829 1.95118 7.34171 2.14645 7.14645L6.14645 3.14645C6.34171 2.95118 6.65829 2.95118 6.85355 3.14645Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"/>
+                  </svg>
+                  <span>Back to Projects</span>
+                </button>
+
+                {selectedProject.liveUrl && (
+                  <a
+                    href={selectedProject.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="interactive-element"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      padding: '0.5rem 1.1rem',
+                      fontSize: '0.8rem',
+                      textDecoration: 'none',
+                      backgroundColor: 'rgba(124, 92, 255, 0.12)',
+                      border: '1px solid var(--accent-purple)',
+                      color: 'var(--text-white)',
+                      borderRadius: '6px',
+                      fontWeight: 600,
+                      boxShadow: '0 0 10px rgba(124, 92, 255, 0.1)',
+                      transition: 'all 0.2s ease',
+                    }}
+                  >
+                    <span>Visit Live Site</span>
+                    <svg width="11" height="11" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3 2C2.44772 2 2 2.44772 2 3V12C2 12.5523 2.44772 13 3 13H12C12.5523 13 13 12.5523 13 12V8.5C13 8.22386 12.7761 8 12.5 8C12.2239 8 12 8.22386 12 8.5V12H3V3H6.5C6.77614 3 7 2.77614 7 2.5C7 2.22386 6.77614 2 6.5 2H3ZM9.5 2C9.22386 2 9 2.22386 9 2.5C9 2.77614 9.22386 3 9.5 3H11.2929L5.64645 8.64645C5.45118 8.84171 5.45118 9.15829 5.64645 9.35355C5.84171 9.54882 6.15829 9.54882 6.35355 9.35355L12 3.70711V5.5C12 5.77614 12.2239 6 12.5 6C12.7761 6 13 5.77614 13 5.5V2.5C13 2.22386 12.7761 2 12.5 2H9.5Z" fill="currentColor"/>
+                    </svg>
+                  </a>
+                )}
+              </div>
               
               <span className="label-saas" style={{ fontSize: '0.7rem' }}>
                 CASE STUDY // {selectedProject.number}
@@ -921,10 +1478,12 @@ export default function Projects() {
                       alt={selectedProject.title}
                       style={{
                         width: '100%',
+                        height: 'auto',
+                        maxHeight: '420px',
                         borderRadius: '8px',
                         display: 'block',
-                        aspectRatio: '16/10',
-                        objectFit: 'cover',
+                        objectFit: 'contain',
+                        backgroundColor: '#0c0c0e',
                       }}
                     />
                   </div>
@@ -968,7 +1527,13 @@ export default function Projects() {
                     {selectedProject.id === 'school-erp' && (
                       <ERPInteractiveArchitecture />
                     )}
-                    {selectedProject.id !== 'buildstorey' && selectedProject.id !== 'school-erp' && (
+                    {selectedProject.id === 'sudhaanva' && (
+                      <SudhaanvaInteractiveArchitecture />
+                    )}
+                    {selectedProject.id === 'cjpmedia' && (
+                      <CJPInteractiveArchitecture />
+                    )}
+                    {selectedProject.id !== 'buildstorey' && selectedProject.id !== 'school-erp' && selectedProject.id !== 'sudhaanva' && selectedProject.id !== 'cjpmedia' && (
                       <div style={{ overflowX: 'auto' }}>
                         {selectedProject.architecture}
                       </div>
@@ -1313,7 +1878,7 @@ export default function Projects() {
                           color: 'var(--text-gray-muted)',
                         }}
                       >
-                        {project.metrics[0].value} {project.metrics[0].label.toLowerCase() === 'product categories' ? 'categories' : project.metrics[0].label.toLowerCase().includes('savings') ? 'savings' : 'latency'}
+                        {project.metrics[0].value} {project.metrics[0].label.toLowerCase() === 'product categories' ? 'categories' : project.metrics[0].label.toLowerCase().includes('savings') ? 'savings' : project.metrics[0].label.toLowerCase().includes('modules') ? 'modules' : project.metrics[0].label.toLowerCase().includes('performance') ? 'SEO performance' : project.metrics[0].label.toLowerCase().includes('sync') ? 'sync' : 'latency'}
                       </span>
                       
                       <span
