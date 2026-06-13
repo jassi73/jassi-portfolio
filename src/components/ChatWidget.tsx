@@ -78,7 +78,30 @@ export default function ChatWidget() {
     setJoined(false);
 
     // 1. Create a random visitor peer ID
-    const visitorPeer = new Peer();
+    const visitorPeer = new Peer({
+      config: {
+        iceServers: [
+          { urls: 'stun:stun.l.google.com:19302' },
+          { urls: 'stun:stun1.l.google.com:19302' },
+          { urls: 'stun:stun2.l.google.com:19302' },
+          {
+            urls: 'turn:openrelay.metered.ca:80',
+            username: 'openrelayproject',
+            credential: 'openrelayproject'
+          },
+          {
+            urls: 'turn:openrelay.metered.ca:443',
+            username: 'openrelayproject',
+            credential: 'openrelayproject'
+          },
+          {
+            urls: 'turn:openrelay.metered.ca:443?transport=tcp',
+            username: 'openrelayproject',
+            credential: 'openrelayproject'
+          }
+        ]
+      }
+    });
     peerRef.current = visitorPeer;
 
     visitorPeer.on('open', () => {
@@ -88,12 +111,12 @@ export default function ChatWidget() {
       });
       connRef.current = connection;
 
-      // 3. Set connection timeout (5 seconds)
+      // 3. Set connection timeout (15 seconds)
       connTimeoutRef.current = window.setTimeout(() => {
         if (statusRef.current === 'connecting') {
           handleDisconnect('offline');
         }
-      }, 5000);
+      }, 15000);
 
       // Helper to handle channel open safely
       const handleWidgetOpen = () => {
