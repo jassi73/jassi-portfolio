@@ -95,11 +95,18 @@ export default function ChatWidget() {
         }
       }, 5000);
 
-      connection.on('open', () => {
+      // Helper to handle channel open safely
+      const handleWidgetOpen = () => {
         if (connTimeoutRef.current) clearTimeout(connTimeoutRef.current);
         setStatus('online');
         setMessages([{ sender: 'system', text: 'Connected to Jassi Parihar.', timestamp: new Date().toLocaleTimeString() }]);
-      });
+      };
+
+      if (connection.open) {
+        handleWidgetOpen();
+      } else {
+        connection.on('open', handleWidgetOpen);
+      }
 
       connection.on('data', (payload: any) => {
         if (!payload || typeof payload !== 'object') return;

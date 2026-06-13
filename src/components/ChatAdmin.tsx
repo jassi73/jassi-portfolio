@@ -130,8 +130,8 @@ export default function ChatAdmin() {
       addSystemLog(`Incoming connection request from peer: ${conn.peer}`);
       playNotificationSound();
 
-      // Listen for connection status changes
-      conn.on('open', () => {
+      // Helper to handle channel open safely
+      const handleChannelOpen = () => {
         addSystemLog(`WebRTC Channel opened with: ${conn.peer}`);
         connectionsRef.current[conn.peer] = conn;
 
@@ -160,7 +160,14 @@ export default function ChatAdmin() {
             ];
           }
         });
-      });
+      };
+
+      // Listen for connection status changes
+      if (conn.open) {
+        handleChannelOpen();
+      } else {
+        conn.on('open', handleChannelOpen);
+      }
 
       // Listen for messages & typing status
       conn.on('data', (payload: any) => {
@@ -411,10 +418,10 @@ export default function ChatAdmin() {
   }
 
   return (
-    <div className="container-saas" style={{ padding: '2rem 0', minHeight: 'calc(100vh - 120px)', display: 'grid', gridTemplateColumns: '300px 1fr', gap: '1.5rem' }}>
+    <div className={`container-saas admin-chat-layout ${activeChatId ? 'has-active-chat' : ''}`} style={{ padding: '2rem 0', minHeight: 'calc(100vh - 120px)' }}>
       
       {/* Sidebar - Visitors List & System logs */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+      <div className="admin-sidebar">
         
         {/* Status card */}
         <div className="saas-card" style={{ padding: '1.25rem', backgroundColor: 'var(--surface-card-darker)' }}>
@@ -540,14 +547,26 @@ export default function ChatAdmin() {
       </div>
 
       {/* Main chat window */}
-      <div className="saas-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', height: '100%', minHeight: '480px', backgroundColor: 'var(--surface-card-darker)' }}>
+      <div className="saas-card admin-main-chat" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', height: '100%', minHeight: '480px', backgroundColor: 'var(--surface-card-darker)' }}>
         {activeChat ? (
           <>
             {/* Header info */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid var(--border-subtle)', marginBottom: '1rem' }}>
-              <div>
-                <h3 style={{ color: 'var(--text-white)', fontSize: '1.05rem', fontWeight: 'bold' }}>{activeChat.name}</h3>
-                <span style={{ fontSize: '0.65rem', color: 'var(--text-gray-muted)', fontFamily: 'var(--font-mono)' }}>Channel Peer ID: {activeChat.peerId}</span>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <button 
+                  onClick={() => setActiveChatId(null)}
+                  className="admin-back-btn"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                  </svg>
+                  <span>Back</span>
+                </button>
+                <div>
+                  <h3 style={{ color: 'var(--text-white)', fontSize: '1.05rem', fontWeight: 'bold' }}>{activeChat.name}</h3>
+                  <span style={{ fontSize: '0.65rem', color: 'var(--text-gray-muted)', fontFamily: 'var(--font-mono)' }}>Channel Peer ID: {activeChat.peerId}</span>
+                </div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <span 

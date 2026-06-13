@@ -374,4 +374,69 @@ select {
   opacity: 0.45;
 }
 
+/* Responsive Admin Chat Layout */
+.admin-chat-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 1.5rem;
+}
+
+.admin-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.admin-main-chat {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-back-btn {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .admin-chat-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  /* When a chat is active, hide sidebar and show chat window */
+  .admin-chat-layout.has-active-chat .admin-sidebar {
+    display: none;
+  }
+  
+  .admin-chat-layout.has-active-chat .admin-main-chat {
+    display: flex;
+  }
+  
+  /* When no chat is active, show sidebar and hide chat window */
+  .admin-chat-layout:not(.has-active-chat) .admin-sidebar {
+    display: flex;
+  }
+  
+  .admin-chat-layout:not(.has-active-chat) .admin-main-chat {
+    display: none;
+  }
+  
+  .admin-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: none;
+    border: none;
+    color: var(--accent-purple);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.5rem 0;
+    margin-right: 0.75rem;
+    transition: color 0.2s;
+  }
+
+  .admin-back-btn:hover {
+    color: var(--text-white);
+  }
+}
+
 
