@@ -14,28 +14,32 @@ interface TimelineItem {
 
 const timelineData: TimelineItem[] = [
   {
-    year: '2024 - PRESENT',
+    year: 'JAN 2024 - PRESENT',
     role: 'Software Engineer',
-    company: 'Newron – Vast SaaS Educational ERP Startup',
-    description: 'Led end-to-end system design, modular frontend architecture, and core modules development of a multi-tenant SaaS School ERP platform (ELERN) from scratch in a high-growth environment.',
+    company: 'Newron – School ERP Startup · Pune, Maharashtra',
+    description: 'Designed and built a multi-role School ERP platform serving 15+ institutions. Built responsive web applications and wrapped them in hybrid mobile containers, integrated real-time ticketing, live GPS tracking, financial reconciliation, and role-based access control.',
     bullets: [
-      'Engineered 6 core modules from scratch in a monorepo structure: Helpdesk support ticketing, Utility operations, Book Wise Library Management, student Discipline registers, Hostel administration, and Transport route trackers.',
-      'Developed and published hybrid cross-platform Student and Employee mobile applications utilizing React Native WebView containers for fast cross-platform deployment.',
-      'Architected real-time Socket.io and native WebSocket channels for live support chat messaging, room scopes, and instant data notifications.',
-      'Designed interactive administrative reporting dashboards using React ApexCharts, React Query for optimized cache sync, and Tailwind CSS for responsive components.',
-      'Guided clean system development using Claude AI and Cursor AI coding pipelines, translating Figma designer prototypes directly into production layouts.'
+      'Multi-portal School ERP: Designed and built a multi-role School ERP platform serving 15+ institutions. The admin panel was built with React.js and Tailwind CSS for a clean, responsive experience. The student, parent, and employee apps were built with React.js and Material UI and wrapped in React Native WebView, making the web application accessible as a native mobile app without a separate codebase.',
+      'Real-time ticketing system: Architected a Helpdesk and Ticketing module using event-driven architecture with WebSockets (Socket.io) and a Node.js backend. The system processed over 100,000 tickets in 7 months with a 92% resolution rate, cutting average response time from 48 hours down to 3 hours.',
+      'AWS deployment: Deployed frontend builds on AWS S3 with CloudFront for CDN delivery and used EC2 instances for backend hosting. Set up CI/CD pipelines for automated builds and deployments, removing the need for manual releases.',
+      'Live GPS tracking: Built a real-time school bus tracking feature with a Node.js backend streaming live GPS coordinates and Google Maps API integrated into the React frontend, covering 50+ buses. Parent inquiry calls dropped by 78% after launch.',
+      'Analytics dashboards and modules: Developed data-intensive admin dashboards using React and ApexCharts, backed by optimized PostgreSQL queries, giving school administrators real-time visibility into attendance, finances, and resource utilization. Also built the Discipline Module for tracking and managing student conduct records, and the Student-Parent Connect Module enabling direct in-app communication between parents and school staff.',
+      'Payment integrations: Integrated HDFC, Razorpay, and PayU payment gateways via RESTful APIs with automated reconciliation workflows, improving transaction success rates and reducing manual finance work.',
+      'Auth and access control: Implemented JWT-based authentication and role-based access control across all user roles, keeping each portal secure and ensuring users only access what they are permitted to.'
     ]
   },
   {
-    year: '2022 - 2023',
+    year: 'FEB 2022 - OCT 2023',
     role: 'Frontend Developer',
-    company: 'Qdegrees (Buildstorey Startup)',
-    description: 'Designed and engineered the end-to-end B2B & B2C building materials marketplace (Buildstorey) from scratch, supporting Amazon-style online retail and contract sales.',
+    company: 'Qdegrees · Jaipur, Rajasthan',
+    description: 'Led frontend development of a large-scale building-materials e-commerce platform (Buildstorey) covering 45+ product categories from initial project setup through to production launch.',
     bullets: [
-      'Architected the full system design and codebase using Next.js with Server-Side Rendering (SSR) to optimize SEO ranking in Chrome.',
-      'Designed and implemented multi-role login portals and supplier onboarding checksheets from scratch.',
-      'Built a high-performance backend using Node.js, Express, and MongoDB, designing scalable schemas and query indexes.',
-      'Optimized client-side state transitions with Redux Saga to manage product catalog updates across 14 materials categories.'
+      'Large-scale e-commerce platform: Led frontend development of a building-materials e-commerce platform using Next.js and React.js with Material UI, covering 45+ product categories from initial project setup through to production launch.',
+      'SSR and SSG for SEO: Implemented server-side rendering and static site generation in Next.js, which noticeably improved organic search rankings, cut page load times, and boosted Core Web Vitals scores after deployment.',
+      'Python backend collaboration: Worked closely with the Python backend team to integrate REST APIs across product listings, inventory, user sessions, and checkout flows, ensuring smooth and reliable data exchange between frontend and backend.',
+      'Microsoft Azure: Assisted in deploying frontend builds on Azure Static Web Apps and integrated Azure Blob Storage for product image hosting and CDN delivery, improving asset load times across the platform.',
+      'Multi-role onboarding: Built buyer and seller onboarding flows with dynamic form validations, conditional logic, and API integrations, improving conversion rates and reducing drop-offs during signup.',
+      'Redux Saga for async state: Managed complex async workflows for inventory sync, product filtering, sorting, and pagination using Redux Saga, keeping the UI responsive even with large data sets.'
     ]
   }
 ];
