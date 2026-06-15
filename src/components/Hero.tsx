@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import jassiProfile from '../assets/Jassi.jpeg';
+import resumePdf from '../assets/Jasa_Ram_Resume.pdf';
 
 export default function Hero() {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -218,20 +219,12 @@ export default function Hero() {
                   <span>View Projects</span>
                 </button>
                 <a
-                  href="#resume"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    const lab = document.getElementById('ailab');
-                    if (lab) {
-                      lab.scrollIntoView({ behavior: 'smooth' });
-                      const event = new CustomEvent('select-resume-tab');
-                      window.dispatchEvent(event);
-                    }
-                  }}
+                  href={resumePdf}
+                  download="Jasa_Ram_Resume.pdf"
                   className="btn-secondary-border interactive-element"
                   style={{ padding: '0.6rem 1.2rem', fontSize: '0.8rem' }}
                 >
-                  <span>Analyze Resume</span>
+                  <span>Download Resume</span>
                 </a>
               </div>
             </motion.div>
