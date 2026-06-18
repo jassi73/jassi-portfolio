@@ -104,6 +104,10 @@ export default function ChatAdmin() {
     
     // Register as the host/operator peer
     const p = new Peer('jassi-parihar-chat-host', {
+      host: '0.peerjs.com',
+      port: 443,
+      path: '/',
+      secure: true,
       debug: 1, // Only log errors
       config: {
         iceServers: [
@@ -135,6 +139,23 @@ export default function ChatAdmin() {
       setPeerId(id);
       setPeerError(null);
       addSystemLog(`Registered online as host: ${id}`);
+    });
+
+    p.on('disconnected', () => {
+      addSystemLog('Disconnected from signaling server. Reconnecting...');
+      let reconnectAttempts = 0;
+      const attemptReconnect = () => {
+        if (p.destroyed) return;
+        if (!p.disconnected) {
+          addSystemLog('Reconnected successfully to signaling server.');
+          return;
+        }
+        reconnectAttempts++;
+        addSystemLog(`Reconnection attempt ${reconnectAttempts}...`);
+        p.reconnect();
+        setTimeout(attemptReconnect, Math.min(1000 * Math.pow(2, reconnectAttempts), 30000));
+      };
+      attemptReconnect();
     });
 
     p.on('error', (err) => {

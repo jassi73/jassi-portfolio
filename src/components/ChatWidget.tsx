@@ -79,6 +79,10 @@ export default function ChatWidget() {
 
     // 1. Create a random visitor peer ID
     const visitorPeer = new Peer({
+      host: '0.peerjs.com',
+      port: 443,
+      path: '/',
+      secure: true,
       config: {
         iceServers: [
           { urls: 'stun:stun.l.google.com:19302' },
@@ -104,6 +108,22 @@ export default function ChatWidget() {
     });
     peerRef.current = visitorPeer;
 
+    visitorPeer.on('disconnected', () => {
+      console.log('Visitor peer disconnected from signaling server. Reconnecting...');
+      let reconnectAttempts = 0;
+      const attemptReconnect = () => {
+        if (visitorPeer.destroyed) return;
+        if (!visitorPeer.disconnected) {
+          console.log('Visitor peer reconnected successfully.');
+          return;
+        }
+        reconnectAttempts++;
+        visitorPeer.reconnect();
+        setTimeout(attemptReconnect, Math.min(1000 * Math.pow(2, reconnectAttempts), 15000));
+      };
+      attemptReconnect();
+    });
+
     visitorPeer.on('open', () => {
       // 2. Attempt to connect to the operator's registered ID
       const connection = visitorPeer.connect('jassi-parihar-chat-host', {
@@ -111,12 +131,12 @@ export default function ChatWidget() {
       });
       connRef.current = connection;
 
-      // 3. Set connection timeout (15 seconds)
+      // 3. Set connection timeout (25 seconds)
       connTimeoutRef.current = window.setTimeout(() => {
         if (statusRef.current === 'connecting') {
           handleDisconnect('offline');
         }
-      }, 15000);
+      }, 25000);
 
       // Helper to handle channel open safely
       const handleWidgetOpen = () => {
