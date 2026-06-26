@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import jassiProfile from '../assets/Jassi.jpeg';
-import resumePdf from '../assets/Jasa_Ram_Resume.pdf';
 
 export default function Hero() {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -9,6 +8,56 @@ export default function Hero() {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+
+  // States for Resume Access Request Modal
+  const [showModal, setShowModal] = useState(false);
+  const [requestEmail, setRequestEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  const handleRequestSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!requestEmail.trim()) {
+      setSubmitError('Please enter a valid email address.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    try {
+      const accessKey = import.meta.env.VITE_WEB3FORMS_KEY || import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || 'a2d5bbd0-9b5a-4f1f-acc9-7a308139b614';
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          name: 'Resume Requester',
+          email: requestEmail,
+          message: `Dear Jassi,\n\nSomeone has requested access to view your Resume!\n\nRequester Email: ${requestEmail}\n\n---\nSent via Portfolio Hero Page.`,
+          subject: `[Resume Access Request] Request from ${requestEmail}`,
+          from_name: 'Jasa Portfolio Router',
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setSubmitSuccess(true);
+        setRequestEmail('');
+      } else {
+        setSubmitError(data.message || 'Failed to submit request.');
+      }
+    } catch (err) {
+      console.error('Request submit error:', err);
+      setSubmitError('Network error. Failed to send request.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   // 1. 3D Tilt Logic
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -218,14 +267,13 @@ export default function Hero() {
                 <button onClick={scrollToProjects} className="btn-primary-glow interactive-element" style={{ padding: '0.6rem 1.2rem', fontSize: '0.8rem', boxShadow: 'none' }}>
                   <span>View Projects</span>
                 </button>
-                <a
-                  href={resumePdf}
-                  download="Jasa_Ram_Resume.pdf"
+                <button
+                  onClick={() => setShowModal(true)}
                   className="btn-secondary-border interactive-element"
                   style={{ padding: '0.6rem 1.2rem', fontSize: '0.8rem' }}
                 >
-                  <span>Download Resume</span>
-                </a>
+                  <span>Request Access</span>
+                </button>
               </div>
             </motion.div>
 
@@ -555,6 +603,167 @@ export default function Hero() {
           }
         }
       `}</style>
+
+      {/* Modal for Requesting Resume Access */}
+      <AnimatePresence>
+        {showModal && (
+          <div 
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'rgba(5, 5, 7, 0.85)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              zIndex: 99999,
+              padding: '1.5rem',
+            }}
+            onClick={() => {
+              if (!isSubmitting) {
+                setShowModal(false);
+                setSubmitSuccess(false);
+                setSubmitError('');
+              }
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 15 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 350 }}
+              style={{
+                width: '100%',
+                maxWidth: '420px',
+                padding: '2rem',
+                backgroundColor: 'var(--surface-card)',
+                border: '1px solid var(--border-subtle)',
+                borderRadius: '16px',
+                position: 'relative',
+                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                disabled={isSubmitting}
+                onClick={() => {
+                  setShowModal(false);
+                  setSubmitSuccess(false);
+                  setSubmitError('');
+                }}
+                style={{
+                  position: 'absolute',
+                  top: '1.25rem',
+                  right: '1.25rem',
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--text-gray-muted)',
+                  cursor: 'pointer',
+                  padding: '0.25rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-white)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-gray-muted)'}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+
+              <span className="label-saas" style={{ fontSize: '0.65rem', letterSpacing: '0.12em', color: 'var(--accent-purple)' }}>ACCESS PROTOCOL</span>
+              <h3 style={{ color: 'var(--text-white)', fontSize: '1.3rem', fontWeight: 'bold', marginTop: '0.4rem', marginBottom: '0.75rem' }}>Request Resume Access</h3>
+              <p style={{ color: 'var(--text-gray-muted)', fontSize: '0.8rem', lineHeight: 1.45, marginBottom: '1.5rem' }}>
+                Please provide your contact email. Jassi will receive a secure transmission and email you the resume credentials shortly.
+              </p>
+
+              {submitSuccess ? (
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', textAlign: 'center', padding: '1rem 0' }}
+                >
+                  <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'rgba(78, 255, 77, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#4eff4d', border: '1px solid rgba(78, 255, 77, 0.2)', padding: '0.5rem', margin: '0 auto' }}>
+                    <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <h4 style={{ color: 'var(--text-white)', fontSize: '0.95rem', fontWeight: 600 }}>Request Submitted</h4>
+                  <p style={{ color: 'var(--text-gray-muted)', fontSize: '0.75rem', lineHeight: 1.4 }}>
+                    Your request has been dispatched. Check your inbox shortly for direct resume coordinates.
+                  </p>
+                  <button 
+                    onClick={() => {
+                      setShowModal(false);
+                      setSubmitSuccess(false);
+                    }}
+                    className="btn-secondary-border interactive-element" 
+                    style={{ marginTop: '0.5rem', width: '100%', justifyContent: 'center', padding: '0.55rem 1.2rem', fontSize: '0.78rem' }}
+                  >
+                    Close Window
+                  </button>
+                </motion.div>
+              ) : (
+                <form onSubmit={handleRequestSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                    <label style={{ fontSize: '0.65rem', color: 'var(--text-gray-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>BUSINESS EMAIL</label>
+                    <input 
+                      type="email"
+                      required
+                      disabled={isSubmitting}
+                      value={requestEmail}
+                      onChange={(e) => setRequestEmail(e.target.value)}
+                      placeholder="corporate@company.com"
+                      style={{
+                        width: '100%',
+                        padding: '0.75rem 0.85rem',
+                        backgroundColor: 'var(--surface-input)',
+                        border: '1px solid var(--border-subtle)',
+                        borderRadius: '8px',
+                        color: 'var(--text-white)',
+                        outline: 'none',
+                        fontSize: '14.5px',
+                        transition: 'all 0.2s ease',
+                      }}
+                      className="chat-input-field"
+                    />
+                  </div>
+
+                  {submitError && (
+                    <div style={{ color: '#ff4d4d', fontSize: '0.72rem', fontFamily: 'var(--font-mono)' }}>
+                      {submitError}
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="btn-primary-glow interactive-element"
+                    style={{
+                      width: '100%',
+                      justifyContent: 'center',
+                      padding: '0.7rem 1.5rem',
+                      fontSize: '0.82rem',
+                      cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                      opacity: isSubmitting ? 0.7 : 1,
+                    }}
+                  >
+                    <span>{isSubmitting ? 'DISPATCHING ACCESS REQUEST...' : 'Submit Request'}</span>
+                  </button>
+                </form>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
