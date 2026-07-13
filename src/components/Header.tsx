@@ -162,6 +162,8 @@ export default function Header({ currentRoute = 'home' }: { currentRoute?: 'home
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          position: 'relative',
+          zIndex: 101,
         }}
       >
         {/* Brand Wordmark with Carlos Mendoza-style Logo Icon */}
