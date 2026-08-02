@@ -9,7 +9,7 @@ export default function Story() {
   
   // Paragraphs to animate word-by-word
   const p1Text = "I believe coding is more than writing instructions for a machine. It is a form of digital craftsmanship—the art of structuring logic to serve human behavior. I bridge the gap between design rigor and complex engineering architectures, ensuring that every interaction feels intentional.";
-  const p2Text = "Over the past 5+ years, I have worked with startups and fast-moving teams to take ideas from sketches to production. I specialize in designing fluid frontend systems, robust backend APIs, and deploying modern cloud setups that scale without friction.";
+  const p2Text = "Over the past 4.5+ years, I have worked with startups and fast-moving teams to take ideas from sketches to production. I specialize in designing fluid frontend systems, robust backend APIs, and deploying modern cloud setups that scale without friction.";
   const p3Text = "The next wave of product design belongs to intelligent, context-aware systems. My focus is on merging large language models, real-time web canvases, and smart user interfaces to build tools that feel like extensions of human intelligence rather than static dashboards.";
 
   const p1Ref = useRef<HTMLParagraphElement>(null);

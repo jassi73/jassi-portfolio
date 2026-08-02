@@ -296,6 +296,12 @@ export default function Hero() {
                   <path fillRule="evenodd" clipRule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                 </svg>
               </a>
+              {/* Twitter / X */}
+              <a href="https://x.com/jassi_parihar73" target="_blank" rel="noreferrer" className="interactive-element social-icon-link" aria-label="Twitter / X">
+                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </a>
             </motion.div>
           </div>
 
@@ -451,7 +457,7 @@ export default function Hero() {
                           boxShadow: '0 0 8px #34c759',
                         }}
                       />
-                      <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--text-gray-muted)' }}>
+                      <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-sans)', color: 'var(--text-gray-muted)' }}>
                         ONLINE
                       </span>
                     </div>
@@ -465,7 +471,7 @@ export default function Hero() {
                         EXPERIENCE
                       </span>
                       <p style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--text-white)' }}>
-                        5+ Years Scaling Startup Products
+                        4.5+ Years Scaling Startup Products
                       </p>
                     </div>
 
@@ -490,7 +496,7 @@ export default function Hero() {
                             key={tech}
                             style={{
                               fontSize: '0.7rem',
-                              fontFamily: 'var(--font-mono)',
+                              fontFamily: 'var(--font-sans)',
                               padding: '0.25rem 0.5rem',
                               backgroundColor: 'rgba(255,255,255,0.03)',
                               border: '1px solid var(--border-subtle)',
@@ -714,7 +720,7 @@ export default function Hero() {
               ) : (
                 <form onSubmit={handleRequestSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                    <label style={{ fontSize: '0.65rem', color: 'var(--text-gray-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>BUSINESS EMAIL</label>
+                    <label style={{ fontSize: '0.65rem', color: 'var(--text-gray-muted)', fontFamily: 'var(--font-sans)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>BUSINESS EMAIL</label>
                     <input 
                       type="email"
                       required
@@ -738,7 +744,7 @@ export default function Hero() {
                   </div>
 
                   {submitError && (
-                    <div style={{ color: '#ff4d4d', fontSize: '0.72rem', fontFamily: 'var(--font-mono)' }}>
+                    <div style={{ color: '#ff4d4d', fontSize: '0.72rem', fontFamily: 'var(--font-sans)' }}>
                       {submitError}
                     </div>
                   )}

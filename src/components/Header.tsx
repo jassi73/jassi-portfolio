@@ -68,7 +68,7 @@ export default function Header({ currentRoute = 'home' }: { currentRoute?: 'home
       return;
     }
 
-    const sections = ['hero', 'expertise', 'experience', 'projects', 'ailab', 'contact'];
+    const sections = ['hero', 'expertise', 'experience', 'projects', 'contact'];
     const elements = sections.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
 
     const observerOptions = {
@@ -109,7 +109,6 @@ export default function Header({ currentRoute = 'home' }: { currentRoute?: 'home
 
   const getSectionId = (label: string) => {
     if (label === 'Work') return 'projects';
-    if (label === 'AI Lab') return 'ailab';
     if (label === 'Contact') return 'contact';
     if (label === 'Skills') return 'expertise';
     if (label === 'Experience') return 'experience';
@@ -235,7 +234,7 @@ export default function Header({ currentRoute = 'home' }: { currentRoute?: 'home
               alignItems: 'center',
             }}
           >
-            {['Skills', 'Experience', 'Work', 'AI Lab', 'Contact'].map((section) => {
+          {['Skills', 'Experience', 'Work', 'Contact'].map((section) => {
               const sectionId = getSectionId(section);
               const isActive = currentRoute !== 'home' 
                 ? (sectionId === 'blog')
@@ -385,7 +384,7 @@ export default function Header({ currentRoute = 'home' }: { currentRoute?: 'home
             WebkitBackdropFilter: 'blur(20px)',
           }}
         >
-          {['Skills', 'Experience', 'Work', 'AI Lab', 'Contact'].map((section) => {
+          {['Skills', 'Experience', 'Work', 'Contact'].map((section) => {
             const sectionId = getSectionId(section);
             const isActive = currentRoute !== 'home' 
               ? (sectionId === 'blog')

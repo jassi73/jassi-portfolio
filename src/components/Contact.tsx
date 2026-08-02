@@ -407,6 +407,38 @@ export default function Contact() {
                     </svg>
                   </a>
                 </div>
+
+                {/* Twitter / X Node */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span className="label-saas" style={{ fontSize: '0.65rem', color: 'var(--text-gray-muted)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                    TWITTER / X
+                  </span>
+                  <a
+                    href="https://x.com/jassi_parihar73"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="interactive-element contact-coord-value"
+                    style={{
+                      color: 'var(--accent-purple)',
+                      textDecoration: 'none',
+                      fontWeight: 600,
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.25rem',
+                      transition: 'transform 0.2s ease',
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'translateX(3px)'}
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'translateX(0)'}
+                  >
+                    <span>@jassi_parihar73</span>
+                    <svg width="10" height="10" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3.64645 11.3536C3.45118 11.5488 3.1346 11.5488 2.93934 11.3536C2.74408 11.1583 2.74408 10.8417 2.93934 10.6464L10.5 3L6 3C5.72386 3 5.5 2.77614 5.5 2.5C5.5 2.22386 5.72386 2 6 2L12.5 2C12.7761 2 13 2.22386 13 2.5L13 9C13 9.27614 12.7761 9.5 12.5 9.5C12.2239 9.5 12 9.27614 12 9L12 4.5L3.64645 11.3536Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"/>
+                    </svg>
+                  </a>
+                </div>
               </div>
             </div>
 

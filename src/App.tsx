@@ -8,7 +8,6 @@ import Hero from './components/Hero';
 import Expertise from './components/Expertise';
 import Timeline from './components/Timeline';
 import Projects from './components/Projects';
-import AILab from './components/AILab';
 import Contact from './components/Contact';
 import Blog from './components/Blog';
 import ChatAdmin from './components/ChatAdmin';
@@ -131,10 +130,7 @@ export default function App() {
             {/* Section 4: Case studies with architecture maps */}
             <Projects />
 
-            {/* Section 5: Interactive R&D Demos (Chat, Resume, Agent, RAG) */}
-            <AILab />
-
-            {/* Section 6: Contact & Footer */}
+            {/* Section 5: Contact & Footer */}
             <Contact />
           </>
         ) : route === 'project-detail' ? (
