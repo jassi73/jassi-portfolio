@@ -248,7 +248,7 @@ export default function Hero() {
                   letterSpacing: '-0.02em',
                 }}
               >
-                Frontend Engineer &amp; Full Stack AI Developer, based in Pune.
+                Frontend-heavy Full-Stack Developer (4.5+ Years Exp), based in Pune.
               </h2>
 
               {/* Description */}
@@ -259,7 +259,7 @@ export default function Hero() {
                   lineHeight: 1.5,
                 }}
               >
-                I build scalable web applications, AI-powered tools, and modern digital experiences that solve real-world problems.
+                Developing scalable enterprise web and mobile applications with React, Next.js, React Native, Node.js, and Python / FastAPI.
               </p>
 
               {/* Actions */}

@@ -30,14 +30,14 @@ const caseStudiesData: CaseStudy[] = [
       '/assets/buildstorey_onboarding.png',
       '/assets/buildstorey_catalog.png'
     ],
-    challenge: 'Procuring building materials online for bulk business orders (B2B) and individual retail consumers (B2C) suffered from fragmented supplier listings, complex onboarding steps, and weak search engine visibility.',
-    solution: 'Designed and engineered the hybrid B2B & B2C e-commerce marketplace from scratch, establishing Amazon-like online purchasing capabilities. Built role-wise UI portals for buyer login and multi-step seller onboarding. Optimized Chrome search engine ranking using Next.js Server-Side Rendering (SSR) dynamic pre-rendering, Redux Saga for inventory synchronization, and a high-performance Node.js/Express/MongoDB backend database engine.',
-    impact: 'Successfully integrated 14+ materials categories (cement, steel, tiles, etc.), enabling direct retail purchasing (B2C) and bulk orders (B2B), achieving a 98/100 Chrome SEO score.',
-    tech: ['Next.js', 'React', 'Node.js', 'Express', 'MongoDB', 'Material UI', 'Ant Design', 'Razorpay', 'Adobe'],
+    challenge: 'Procuring building materials online for bulk business orders (B2B) and retail buyers (B2C) required a unified platform covering 45+ product categories with fast page loads, dynamic onboarding forms, and high search engine visibility.',
+    solution: 'Led frontend engineering of the building-materials e-commerce platform using Next.js and React.js with Material UI from project setup through production. Implemented SSR and SSG for SEO and Core Web Vitals optimizations. Collaborated closely with the Python & FastAPI backend engineering team to integrate high-speed RESTful APIs across listings, inventory sync, and checkout flows. Deployed via Microsoft Azure Static Web Apps with Azure Blob Storage CDN.',
+    impact: 'Successfully launched product listings across 45+ categories with lazy-loaded images, route code-splitting, Redux Saga async state management, and optimized Core Web Vitals scores.',
+    tech: ['Next.js', 'React.js', 'Python', 'FastAPI', 'Material UI', 'Redux Saga', 'Redux Toolkit', 'Azure Static Web Apps', 'Azure Blob Storage', 'Jest'],
     metrics: [
-      { label: 'PRODUCT CATEGORIES', value: '14' },
-      { label: 'RENDERING SPEED', value: 'SSR & SSG' },
-      { label: 'CHROME SEO SCORE', value: '98/100' }
+      { label: 'PRODUCT CATEGORIES', value: '45+' },
+      { label: 'BACKEND ARCHITECTURE', value: 'Python / FastAPI' },
+      { label: 'RENDERING SPEED', value: 'SSR & SSG' }
     ],
     codeLanguage: 'typescript',
     codeSnippet: `// Next.js Server-Side Rendering (SSR) & Dynamic SEO Page Meta Tags
@@ -82,14 +82,14 @@ export default function MaterialCatalog({ products, categoryName }: any) {
         <text x="200" y="57" fill="var(--accent-purple)" fontSize="8" fontFamily="monospace" textAnchor="middle">MUI &amp; AntD UI</text>
 
         {/* Backend Stage */}
-        <rect x="290" y="20" width="110" height="50" rx="6" fill="#0C0C0E" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
-        <text x="345" y="42" fill="#FFFFFF" fontSize="9" fontFamily="monospace" fontWeight="bold" textAnchor="middle">3. NODE.JS API</text>
-        <text x="345" y="57" fill="rgba(255,255,255,0.4)" fontSize="8" fontFamily="monospace" textAnchor="middle">Express &amp; Razorpay</text>
+        <rect x="290" y="20" width="115" height="50" rx="6" fill="#0C0C0E" stroke="var(--accent-purple)" strokeWidth="1"/>
+        <text x="347" y="42" fill="#FFFFFF" fontSize="9" fontFamily="monospace" fontWeight="bold" textAnchor="middle">3. PYTHON &amp; FASTAPI</text>
+        <text x="347" y="57" fill="var(--accent-purple)" fontSize="8" fontFamily="monospace" textAnchor="middle">REST APIs &amp; Async</text>
 
-        {/* Database Stage */}
+        {/* Database & Cloud Stage */}
         <rect x="435" y="20" width="95" height="50" rx="6" fill="#0C0C0E" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
-        <text x="482" y="42" fill="#FFFFFF" fontSize="9" fontFamily="monospace" fontWeight="bold" textAnchor="middle">4. MONGODB</text>
-        <text x="482" y="57" fill="rgba(255,255,255,0.4)" fontSize="8" fontFamily="monospace" textAnchor="middle">14 Material Cat</text>
+        <text x="482" y="42" fill="#FFFFFF" fontSize="9" fontFamily="monospace" fontWeight="bold" textAnchor="middle">4. AZURE CLOUD</text>
+        <text x="482" y="57" fill="rgba(255,255,255,0.4)" fontSize="8" fontFamily="monospace" textAnchor="middle">45+ Categories</text>
 
         {/* Connectors */}
         <path d="M110 45H145" stroke="var(--accent-purple)" strokeWidth="1.5" strokeDasharray="3 3"/>
@@ -214,60 +214,8 @@ export function useHelpdeskTickets(schoolId: string) {
     )
   },
   {
-    id: 'ai-platform',
-    number: '03',
-    title: 'AI Assistant Platform',
-    subtitle: 'Semantic LLM Agent Orchestrator',
-    image: '/assets/ai_platform.png',
-    challenge: 'Standard prompt completions consume significant API tokens and suffer from latency delays due to excessive database document scanning.',
-    solution: 'Developed an LLM compiler utilizing a local vector cache. Integrated Server-Sent Events (SSE) for streaming prompt outputs and LangChain modules for custom agent routing.',
-    impact: 'Decreased model token expenses by 35% and cut pipeline latency by half.',
-    tech: ['React', 'FastAPI', 'Python', 'LangChain', 'Qdrant DB', 'OpenAI'],
-    metrics: [
-      { label: 'API TOKEN SAVINGS', value: '35%' },
-      { label: 'VECTOR RETRIEVAL', value: '4ms' },
-      { label: 'COMPILATION LATENCY', value: '-50%' }
-    ],
-    codeLanguage: 'python',
-    codeSnippet: `# Semantic caching decorator utilizing vector database index
-from qdrant_client import QdrantClient
-
-class SemanticCache:
-    def __init__(self):
-        self.qdrant = QdrantClient(host="localhost", port=6333)
-
-    def query(self, prompt_embedding: list[float], threshold: float = 0.96):
-        # Scan local vector space index
-        results = self.qdrant.search(
-            collection_name="semantic_cache",
-            query_vector=prompt_embedding,
-            limit=1
-        )
-        if results and results[0].score >= threshold:
-            return results[0].payload["completion"] # Cache hit!
-        return None # Cache miss`,
-    architecture: (
-      <svg width="100%" height="90" viewBox="0 0 400 90" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', maxWidth: '400px' }}>
-        <rect x="10" y="25" width="80" height="40" rx="4" fill="#0C0C0E" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
-        <text x="50" y="49" fill="#FFFFFF" fontSize="9" fontFamily="monospace" textAnchor="middle">Prompt Console</text>
-        <rect x="120" y="25" width="90" height="40" rx="4" fill="#0C0C0E" stroke="var(--accent-purple)" strokeWidth="1"/>
-        <text x="165" y="49" fill="#FFFFFF" fontSize="9" fontFamily="monospace" textAnchor="middle">FastAPI Engine</text>
-        <rect x="240" y="5" width="65" height="30" rx="4" fill="#0C0C0E" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
-        <text x="272" y="23" fill="#FFFFFF" fontSize="8" fontFamily="monospace" textAnchor="middle">Qdrant DB</text>
-        <rect x="325" y="25" width="65" height="40" rx="4" fill="#0C0C0E" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
-        <text x="357" y="49" fill="#FFFFFF" fontSize="8" fontFamily="monospace" textAnchor="middle">OpenAI GPT</text>
-        <path d="M90 45H120" stroke="var(--accent-purple)" strokeWidth="1.5"/>
-        <path d="M210 35 L240 20" stroke="rgba(255,255,255,0.2)" strokeWidth="1"/>
-        <path d="M210 50 H325" stroke="var(--accent-purple)" strokeWidth="1.5" strokeDasharray="2 2"/>
-        <path d="M272 35 V70 H165 V65" stroke="rgba(255,255,255,0.2)" strokeWidth="1" fill="none"/>
-        <text x="105" y="38" fill="var(--accent-purple)" fontSize="8" fontFamily="monospace" textAnchor="middle">SSE</text>
-        <text x="225" y="22" fill="rgba(255,255,255,0.4)" fontSize="8" fontFamily="monospace" textAnchor="middle">RAG</text>
-      </svg>
-    )
-  },
-  {
     id: 'sudhaanva',
-    number: '04',
+    number: '03',
     title: 'Sudhaanva',
     subtitle: 'Premium Ayurvedic Healthcare & Consultation Platform',
     image: '/assets/sudhaanva_journey.png',
@@ -342,7 +290,7 @@ export async function getStaticProps({ params }: any) {
   },
   {
     id: 'cjpmedia',
-    number: '05',
+    number: '04',
     title: 'CJP Media',
     subtitle: 'Cockroach Janta Party Media & Community Portal',
     image: '/assets/cjpmedia_homepage.png',

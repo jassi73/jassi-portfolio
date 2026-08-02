@@ -16,30 +16,26 @@ const timelineData: TimelineItem[] = [
   {
     year: 'JAN 2024 - PRESENT',
     role: 'Software Engineer',
-    company: 'Newron – School ERP Startup · Pune, Maharashtra',
-    description: 'Designed and built a multi-role School ERP platform serving 15+ institutions. Built responsive web applications and wrapped them in hybrid mobile containers, integrated real-time ticketing, live GPS tracking, financial reconciliation, and role-based access control.',
+    company: 'Newron – Modern School ERP Startup · Pune, Maharashtra',
+    description: 'Architected frontend and core modules for a multi-role School ERP platform serving 15+ institutions. Built responsive web applications and hybrid React Native WebView apps, integrated real-time ticketing, live GPS tracking, financial reconciliation, and role-based access control.',
     bullets: [
-      'Multi-portal School ERP: Designed and built a multi-role School ERP platform serving 15+ institutions. The admin panel was built with React.js and Tailwind CSS for a clean, responsive experience. The student, parent, and employee apps were built with React.js and Material UI and wrapped in React Native WebView, making the web application accessible as a native mobile app without a separate codebase.',
-      'Real-time ticketing system: Architected a Helpdesk and Ticketing module using event-driven architecture with WebSockets (Socket.io) and a Node.js backend. The system processed over 100,000 tickets in 7 months with a 92% resolution rate, cutting average response time from 48 hours down to 3 hours.',
-      'AWS deployment: Deployed frontend builds on AWS S3 with CloudFront for CDN delivery and used EC2 instances for backend hosting. Set up CI/CD pipelines for automated builds and deployments, removing the need for manual releases.',
-      'Live GPS tracking: Built a real-time school bus tracking feature with a Node.js backend streaming live GPS coordinates and Google Maps API integrated into the React frontend, covering 50+ buses. Parent inquiry calls dropped by 78% after launch.',
-      'Analytics dashboards and modules: Developed data-intensive admin dashboards using React and ApexCharts, backed by optimized PostgreSQL queries, giving school administrators real-time visibility into attendance, finances, and resource utilization. Also built the Discipline Module for tracking and managing student conduct records, and the Student-Parent Connect Module enabling direct in-app communication between parents and school staff.',
-      'Payment integrations: Integrated HDFC, Razorpay, and PayU payment gateways via RESTful APIs with automated reconciliation workflows, improving transaction success rates and reducing manual finance work.',
-      'Auth and access control: Implemented JWT-based authentication and role-based access control across all user roles, keeping each portal secure and ensuring users only access what they are permitted to.'
+      'Multi-role School ERP: Architected the frontend for a multi-role School ERP platform serving 15+ institutions: built the admin panel with React.js and Tailwind CSS (code splitting, lazy loading, WCAG/ARIA compliance) and delivered student, parent, and employee apps using React.js and Material UI wrapped in React Native WebView.',
+      'Real-time Ticketing System: Architected a real-time Helpdesk and Ticketing module using WebSockets (Socket.io) and a Node.js backend, applying useMemo/useCallback to prevent re-renders on high-frequency socket updates; processed 100,000+ tickets in 7 months at a 92% resolution rate, cutting response time from 48 hours to 3 hours (94% faster).',
+      'Live GPS Tracking & Analytics: Built a real-time school bus GPS tracking feature (Node.js backend, Google Maps API) optimised with React.memo across 50+ live bus markers, reducing parent inquiry calls by 78%; also built data-intensive admin dashboards (React, ApexCharts) backed by optimised PostgreSQL queries, cutting admin overhead by 89% across 15+ institutions.',
+      'Auth, Testing & AWS Deployment: Implemented JWT-based authentication and role-based access control with Jest/React Testing Library coverage for critical auth flows; deployed via AWS S3, CloudFront, and EC2 with CI/CD pipelines and Git Flow reviews.',
+      'Payment Integrations: Integrated HDFC, Razorpay, and PayU payment gateways via RESTful APIs with automated reconciliation workflows.'
     ]
   },
   {
     year: 'FEB 2022 - OCT 2023',
     role: 'Frontend Developer',
-    company: 'Qdegrees · Jaipur, Rajasthan',
-    description: 'Led frontend development of a large-scale building-materials e-commerce platform (Buildstorey) covering 45+ product categories from initial project setup through to production launch.',
+    company: 'Qdegrees Services · Jaipur, Rajasthan',
+    description: 'Led frontend development of a building-materials e-commerce platform covering 45+ product categories from initial setup through production launch, collaborating closely with the Python & FastAPI backend team.',
     bullets: [
-      'Large-scale e-commerce platform: Led frontend development of a building-materials e-commerce platform using Next.js and React.js with Material UI, covering 45+ product categories from initial project setup through to production launch.',
-      'SSR and SSG for SEO: Implemented server-side rendering and static site generation in Next.js, which noticeably improved organic search rankings, cut page load times, and boosted Core Web Vitals scores after deployment.',
-      'Python backend collaboration: Worked closely with the Python backend team to integrate REST APIs across product listings, inventory, user sessions, and checkout flows, ensuring smooth and reliable data exchange between frontend and backend.',
-      'Microsoft Azure: Assisted in deploying frontend builds on Azure Static Web Apps and integrated Azure Blob Storage for product image hosting and CDN delivery, improving asset load times across the platform.',
-      'Multi-role onboarding: Built buyer and seller onboarding flows with dynamic form validations, conditional logic, and API integrations, improving conversion rates and reducing drop-offs during signup.',
-      'Redux Saga for async state: Managed complex async workflows for inventory sync, product filtering, sorting, and pagination using Redux Saga, keeping the UI responsive even with large data sets.'
+      'Large-scale E-commerce Platform: Led frontend development of a building-materials e-commerce platform using Next.js and React.js with Material UI, covering 45+ product categories from initial project setup through production launch, with lazy-loaded images and route-based code splitting.',
+      'SSR/SSG for SEO & Performance: Implemented server-side rendering (SSR) and static site generation (SSG) in Next.js, improving Core Web Vitals scores, organic search rankings, and page load times.',
+      'Python & FastAPI Backend Integration: Partnered closely with the Python & FastAPI backend engineering team to integrate high-speed RESTful APIs across product listings, inventory management, user sessions, and checkout flows; deployed builds via Microsoft Azure Static Web Apps with Azure Blob Storage for CDN delivery.',
+      'Onboarding & Async State Management: Built buyer and seller onboarding flows with dynamic form validations and conditional logic, improving conversion; managed async workflows for inventory sync, filtering, and pagination using Redux Saga and Redux Toolkit, with Jest unit tests for reducers and selectors.'
     ]
   }
 ];

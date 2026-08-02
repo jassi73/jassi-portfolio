@@ -43,7 +43,7 @@ export default function AILab() {
             The AI Lab
           </h2>
           <p style={{ color: 'var(--text-gray-muted)', marginTop: '1rem', maxWidth: '600px' }}>
-            Interactive engineering playgrounds highlighting generative structures, agent orchestration, and vector retrieval pipelines.
+            Interactive engineering playgrounds &amp; learning experiments — currently exploring AI, LLM, and AGI with Python.
           </p>
         </div>
 
@@ -63,7 +63,7 @@ export default function AILab() {
             { id: 0, label: 'AI Chat' },
             { id: 1, label: 'Resume Analyzer' },
             { id: 2, label: 'AI Agent Showcase' },
-            { id: 3, label: 'RAG Demo' },
+            { id: 3, label: 'AI, LLM & AGI Focus' },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -116,7 +116,7 @@ export default function AILab() {
             {activeTab === 0 && <AIChatDemo key="chat" />}
             {activeTab === 1 && <ResumeAnalyzerDemo key="resume" />}
             {activeTab === 2 && <AgentShowcaseDemo key="agent" />}
-            {activeTab === 3 && <RAGDemo key="rag" />}
+            {activeTab === 3 && <LearningAIFocusDemo key="learning" />}
           </AnimatePresence>
         </div>
       </div>
@@ -194,13 +194,13 @@ function AIChatDemo() {
     },
     {
       id: 'skills_ai',
-      keywords: ['ai', 'agent', 'rag', 'vector', 'qdrant', 'pinecone', 'langchain', 'openai', 'llm', 'retrieval', 'embeddings', 'streaming', 'sse', 'semantic', 'claude', 'cursor'],
-      response: "Jassi integrates advanced AI workflows including LangChain, OpenAI, Claude AI, and Cursor AI. He designs semantic caching pipelines (reducing LLM token costs by 35% and retrieval latency to 4ms) and creates streaming outputs via Server-Sent Events (SSE)."
+      keywords: ['ai', 'agent', 'rag', 'vector', 'qdrant', 'pinecone', 'langchain', 'openai', 'llm', 'retrieval', 'embeddings', 'streaming', 'sse', 'semantic', 'claude', 'cursor', 'agi', 'python'],
+      response: "Jassi is currently learning and exploring AI, LLMs (Large Language Models), and AGI (Artificial General Intelligence) with Python, building hands-on knowledge in generative AI architectures, prompt engineering, agentic workflows, and machine learning models."
     },
     {
       id: 'buildstorey',
-      keywords: ['buildstorey', 'ecommerce', 'material', 'next.js', 'ssr', 'ssg', 'seo', 'onboarding', 'categories', 'seller', 'login', 'node.js', 'express', 'mongodb'],
-      response: "Jassi was the Frontend Developer of Buildstorey, a hybrid B2B & B2C building materials marketplace (14 categories) supporting Amazon-style online retail and contract sales. He designed the end-to-end system from scratch, including role-wise UI for seller onboarding and user login. The stack features Next.js with SSR/SSG and advanced SEO optimizations for Chrome search rankings, integrated with a Node.js, Express, and MongoDB backend."
+      keywords: ['buildstorey', 'ecommerce', 'material', 'next.js', 'ssr', 'ssg', 'seo', 'onboarding', 'categories', 'seller', 'login', 'qdegrees', 'python', 'fastapi', 'azure'],
+      response: "At Qdegrees Services, Jassi was the Frontend Developer leading the building-materials e-commerce platform covering 45+ product categories. Built with Next.js (SSR/SSG) and Material UI, he partnered closely with the Python & FastAPI backend engineering team to integrate high-speed RESTful APIs across listings, inventory sync, and checkout flows, deploying builds via Microsoft Azure Static Web Apps with Azure Blob Storage."
     },
     {
       id: 'school_erp',
@@ -208,9 +208,9 @@ function AIChatDemo() {
       response: "Jassi engineered the vast SaaS School ERP (ELERN) from scratch in a monorepo at Newron. He developed standalone modules for Helpdesk support ticketing, Utility operations, Library Management (with book wise tracking and fine reports), student Discipline registers, Hostel administration, and Transport routes. He also developed hybrid Student and Employee WebView apps in React Native, integrated Socket.io chat, and built visual analytics reports using React ApexCharts."
     },
     {
-      id: 'ai_platform',
-      keywords: ['assistant', 'platform', 'semantic', 'llm', 'token', 'langchain', 'sse', 'cache', 'nexus'],
-      response: "Jassi built an AI Assistant Platform with LangChain agents and FastAPI. By adding a semantic embedding cache running on Qdrant DB, he saved 35% on OpenAI API costs and achieved 4ms cache hit retrieval speeds."
+      id: 'ai_learning',
+      keywords: ['learning', 'python', 'agi', 'llm', 'ai', 'study', 'focus', 'future'],
+      response: "Jassi is actively learning AI, LLM, and AGI with Python, studying transformer models, language generation, intelligent agent loops, and neural network foundations."
     },
     {
       id: 'sudhaanva',
@@ -229,8 +229,8 @@ function AIChatDemo() {
     },
     {
       id: 'experience',
-      keywords: ['experience', 'work', 'job', 'timeline', 'company', 'history', 'newron', 'qdegrees', 'erp', 'ecommerce', 'buildstorey'],
-      response: "Jassi's timeline includes: Software Engineer at Newron (2024-Present, working on a vast SaaS educational ERP startup, building monorepo modules and mobile WebView apps from scratch), and Frontend Developer of Buildstorey (2022-2023, B2B & B2C building materials e-commerce marketplace built from scratch)."
+      keywords: ['experience', 'work', 'job', 'timeline', 'company', 'history', 'newron', 'qdegrees', 'erp', 'ecommerce', 'buildstorey', 'python', 'fastapi'],
+      response: "Jassi has 4.5+ years of software engineering experience: Software Engineer at Newron (Jan 2024-Present, multi-role SaaS School ERP, WebSockets helpdesk, live bus tracking, AWS), and Frontend Developer at Qdegrees Services (Feb 2022-Oct 2023, building materials e-commerce across 45+ categories, collaborating with Python & FastAPI backend team, Azure)."
     },
     {
       id: 'blogs',
@@ -791,47 +791,9 @@ function AgentShowcaseDemo() {
 }
 
 /* ==========================================================================
-   4. RAG DEMO
+   4. CURRENTLY LEARNING (AI, LLM & AGI)
    ========================================================================== */
-function RAGDemo() {
-  const [query, setQuery] = useState('Buildstorey impact');
-  const [isRunning, setIsRunning] = useState(false);
-  const [activeNodes, setActiveNodes] = useState<number[]>([]);
-  const [ragOutput, setRagOutput] = useState('');
-
-  // 12 vector indexing nodes
-  const nodes = Array.from({ length: 12 }, (_, i) => i);
-
-  const triggerRAG = () => {
-    if (isRunning) return;
-    setIsRunning(true);
-    setActiveNodes([]);
-    setRagOutput('');
-
-    // Step 1: Scan node spaces (Simulate retrieval)
-    setTimeout(() => {
-      // Highlight matching nodes (e.g. 2, 5, 9 correspond to Buildstorey data)
-      setActiveNodes([2, 5, 9]);
-    }, 1000);
-
-    // Step 2: Output stream
-    setTimeout(() => {
-      const response = 'Context injected. Generating synthesis...\n\nBuildstorey is a B2B building materials marketplace (14 categories) designed and coded from scratch. The solution features Next.js SSR/SSG for Chrome SEO optimizations, specialized buyer/seller onboarding UI portals, and a Node.js/Express/MongoDB database engine.';
-      let charIdx = 0;
-      let streamText = '';
-
-      const interval = setInterval(() => {
-        streamText += response[charIdx];
-        setRagOutput(streamText);
-        charIdx++;
-        if (charIdx >= response.length) {
-          clearInterval(interval);
-          setIsRunning(false);
-        }
-      }, 12);
-    }, 2200);
-  };
-
+function LearningAIFocusDemo() {
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -839,136 +801,55 @@ function RAGDemo() {
       exit={{ opacity: 0, y: -10 }}
       style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
     >
-      <div className="label-saas" style={{ color: 'var(--text-gray-dark)', fontSize: '0.65rem', marginBottom: '1.5rem' }}>
-        RETRIEVAL // RETRIEVAL-AUGMENTED GENERATION SYSTEM
+      <div className="label-saas" style={{ color: 'var(--accent-purple)', fontSize: '0.7rem', marginBottom: '1rem', letterSpacing: '0.1em' }}>
+        CURRENTLY LEARNING &amp; EXPLORING // AI, LLM &amp; AGI WITH PYTHON
       </div>
+
+      <h3 style={{ color: 'var(--text-white)', fontSize: '1.4rem', fontWeight: 700, marginBottom: '0.5rem' }}>
+        Exploring Next-Gen Artificial Intelligence
+      </h3>
+      <p style={{ color: 'var(--text-gray-muted)', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '2rem', maxWidth: '750px' }}>
+        Expanding my software engineering skillset by actively studying Artificial Intelligence, Large Language Models (LLMs), and AGI concepts using Python.
+      </p>
 
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(12, 1fr)',
-          gap: '2rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: '1.5rem',
           flexGrow: 1,
         }}
-        className="rag-grid"
       >
-        {/* Left Side: Vector Space Node Grid */}
-        <div style={{ gridColumn: 'span 5' }} className="rag-nodes-col">
-          <span className="label-saas" style={{ fontSize: '0.65rem', color: 'var(--text-gray-dark)', display: 'block', marginBottom: '0.75rem' }}>
-            VECTOR EMBEDDING DATABASE SPACE
-          </span>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '0.5rem',
-              backgroundColor: 'var(--surface-input)',
-              border: '1px solid var(--border-subtle)',
-              borderRadius: '6px',
-              padding: '1rem',
-              height: '140px',
-              alignContent: 'center',
-            }}
-          >
-            {nodes.map((node) => (
-              <div
-                key={node}
-                style={{
-                  height: '24px',
-                  borderRadius: '3px',
-                  backgroundColor: activeNodes.includes(node) ? 'var(--accent-purple)' : 'var(--surface-console)',
-                  border: '1px solid',
-                  borderColor: activeNodes.includes(node) ? 'var(--accent-purple)' : 'var(--border-subtle)',
-                  boxShadow: activeNodes.includes(node) ? '0 0 12px var(--accent-purple)' : 'none',
-                  transition: 'background-color 0.4s, border-color 0.4s, box-shadow 0.4s',
-                }}
-              />
-            ))}
-          </div>
-          <p style={{ fontSize: '0.75rem', color: 'var(--text-gray-muted)', marginTop: '0.75rem', lineHeight: 1.3 }}>
-            Query embeds are mapped mathematically. Matching chunks (highlighted nodes) are retrieved and injected into the LLM context.
+        <div className="saas-card" style={{ padding: '1.5rem', backgroundColor: 'var(--surface-card)' }}>
+          <div style={{ fontSize: '1.6rem', marginBottom: '0.75rem' }}>🐍</div>
+          <h4 style={{ color: 'var(--text-white)', fontSize: '1.05rem', fontWeight: 600, marginBottom: '0.5rem' }}>
+            Python &amp; AI Fundamentals
+          </h4>
+          <p style={{ color: 'var(--text-gray-muted)', fontSize: '0.82rem', lineHeight: 1.5 }}>
+            Studying core Python AI concepts, data structures, scientific libraries (NumPy, PyTorch), and neural network foundations.
           </p>
         </div>
 
-        {/* Right Side: Execution Output Console */}
-        <div style={{ gridColumn: 'span 7', display: 'flex', flexDirection: 'column' }} className="rag-output-col">
-          <span className="label-saas" style={{ fontSize: '0.65rem', color: 'var(--text-gray-dark)', display: 'block', marginBottom: '0.75rem' }}>
-            RAG PIPELINE CONSOLE OUTPUT
-          </span>
+        <div className="saas-card" style={{ padding: '1.5rem', backgroundColor: 'var(--surface-card)' }}>
+          <div style={{ fontSize: '1.6rem', marginBottom: '0.75rem' }}>🤖</div>
+          <h4 style={{ color: 'var(--text-white)', fontSize: '1.05rem', fontWeight: 600, marginBottom: '0.5rem' }}>
+            Large Language Models (LLMs)
+          </h4>
+          <p style={{ color: 'var(--text-gray-muted)', fontSize: '0.82rem', lineHeight: 1.5 }}>
+            Exploring Transformer architectures, prompt engineering, model fine-tuning, vector embeddings, and open-source LLM pipelines.
+          </p>
+        </div>
 
-          <div
-            style={{
-              flexGrow: 1,
-              backgroundColor: 'var(--surface-console)',
-              border: '1px solid var(--border-subtle)',
-              borderRadius: '6px',
-              padding: '1rem',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.8rem',
-              color: 'var(--text-gray-light)',
-              minHeight: '140px',
-              whiteSpace: 'pre-wrap',
-            }}
-          >
-            {isRunning && activeNodes.length === 0 && (
-              <span className="dot-blink" style={{ animation: 'blink 1.2s infinite' }}>[1/2] Computing semantic query coordinates...</span>
-            )}
-            {isRunning && activeNodes.length > 0 && !ragOutput && (
-              <span className="dot-blink" style={{ color: 'var(--accent-purple)', animation: 'blink 1.2s infinite' }}>[2/2] Context nodes matches index: {JSON.stringify(activeNodes)}. Routing synthesis...</span>
-            )}
-            {ragOutput}
-          </div>
+        <div className="saas-card" style={{ padding: '1.5rem', backgroundColor: 'var(--surface-card)' }}>
+          <div style={{ fontSize: '1.6rem', marginBottom: '0.75rem' }}>🌌</div>
+          <h4 style={{ color: 'var(--text-white)', fontSize: '1.05rem', fontWeight: 600, marginBottom: '0.5rem' }}>
+            AGI &amp; Autonomous Agents
+          </h4>
+          <p style={{ color: 'var(--text-gray-muted)', fontSize: '0.82rem', lineHeight: 1.5 }}>
+            Researching Artificial General Intelligence (AGI) theories, cognitive reasoning loops, autonomous agent planning, and multi-agent systems.
+          </p>
         </div>
       </div>
-
-      {/* Query Bar */}
-      <div style={{ display: 'flex', gap: '0.75rem', marginTop: '2rem' }}>
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Enter search query..."
-          disabled={isRunning}
-          style={{
-            flexGrow: 1,
-            backgroundColor: 'var(--surface-input)',
-            border: '1px solid var(--border-subtle)',
-            borderRadius: '6px',
-            padding: '0.8rem 1.2rem',
-            color: 'var(--text-white)',
-            outline: 'none',
-            fontSize: '0.9rem',
-          }}
-          onFocus={(e) => e.target.style.borderColor = 'var(--accent-purple)'}
-          onBlur={(e) => e.target.style.borderColor = 'var(--border-subtle)'}
-        />
-        <button
-          onClick={triggerRAG}
-          disabled={isRunning || !query.trim()}
-          className="btn-primary-glow interactive-element"
-          style={{
-            padding: '0 1.5rem',
-            opacity: isRunning || !query.trim() ? 0.5 : 1,
-            boxShadow: 'none',
-          }}
-        >
-          Run RAG
-        </button>
-      </div>
-
-      <style>{`
-        @media (max-width: 768px) {
-          .rag-grid {
-            grid-template-columns: 1fr !important;
-            gap: 2rem !important;
-          }
-          .rag-nodes-col,
-          .rag-output-col {
-            grid-column: span 12 !important;
-          }
-        }
-      `}</style>
     </motion.div>
   );
 }
