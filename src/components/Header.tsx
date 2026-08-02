@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function Header({ currentRoute = 'home' }: { currentRoute?: 'home' | 'blog' | 'blog-detail' | 'project-detail' | 'chat-admin' }) {
+export default function Header({ currentRoute = 'home' }: { currentRoute?: 'home' | 'gallery' | 'blog' | 'blog-detail' | 'project-detail' | 'chat-admin' }) {
   const [time, setTime] = useState('');
   const [lastScrollY, setLastScrollY] = useState(0);
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
@@ -64,7 +64,7 @@ export default function Header({ currentRoute = 'home' }: { currentRoute?: 'home
   // Intersection Observer for active section indicator
   useEffect(() => {
     if (currentRoute !== 'home') {
-      setActiveSection('blog');
+      setActiveSection(currentRoute);
       return;
     }
 
@@ -109,6 +109,7 @@ export default function Header({ currentRoute = 'home' }: { currentRoute?: 'home
 
   const getSectionId = (label: string) => {
     if (label === 'Work') return 'projects';
+    if (label === 'Gallery') return 'gallery';
     if (label === 'Contact') return 'contact';
     if (label === 'Skills') return 'expertise';
     if (label === 'Experience') return 'experience';
@@ -117,6 +118,10 @@ export default function Header({ currentRoute = 'home' }: { currentRoute?: 'home
   };
 
   const scrollToSection = (id: string) => {
+    if (id === 'gallery') {
+      window.location.hash = '#gallery';
+      return;
+    }
     if (id === 'blog') {
       window.location.hash = '#blog';
       return;
@@ -236,9 +241,7 @@ export default function Header({ currentRoute = 'home' }: { currentRoute?: 'home
           >
           {['Skills', 'Experience', 'Work', 'Contact'].map((section) => {
               const sectionId = getSectionId(section);
-              const isActive = currentRoute !== 'home' 
-                ? (sectionId === 'blog')
-                : (activeSection === sectionId);
+              const isActive = currentRoute === sectionId || (currentRoute === 'home' && activeSection === sectionId);
               return (
                 <div
                   key={section}
@@ -386,9 +389,7 @@ export default function Header({ currentRoute = 'home' }: { currentRoute?: 'home
         >
           {['Skills', 'Experience', 'Work', 'Contact'].map((section) => {
             const sectionId = getSectionId(section);
-            const isActive = currentRoute !== 'home' 
-              ? (sectionId === 'blog')
-              : (activeSection === sectionId);
+            const isActive = currentRoute === sectionId || (currentRoute === 'home' && activeSection === sectionId);
             return (
               <button
                 key={section}

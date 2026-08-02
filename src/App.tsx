@@ -9,12 +9,13 @@ import Expertise from './components/Expertise';
 import Timeline from './components/Timeline';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
+import Gallery from './components/Gallery';
 import Blog from './components/Blog';
 import ChatAdmin from './components/ChatAdmin';
 import ChatWidget from './components/ChatWidget';
 
 export default function App() {
-  const [route, setRoute] = useState<'home' | 'blog' | 'blog-detail' | 'project-detail' | 'chat-admin'>('home');
+  const [route, setRoute] = useState<'home' | 'gallery' | 'blog' | 'blog-detail' | 'project-detail' | 'chat-admin'>('home');
   const [blogId, setBlogId] = useState<string | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const isFirstLoad = useRef(true);
@@ -41,6 +42,10 @@ export default function App() {
         window.scrollTo({ top: 0 });
       } else if (hash === '#blog') {
         setRoute('blog');
+        setBlogId(null);
+        window.scrollTo({ top: 0 });
+      } else if (hash === '#gallery') {
+        setRoute('gallery');
         setBlogId(null);
         window.scrollTo({ top: 0 });
       } else if (hash.startsWith('#project/')) {
@@ -133,6 +138,8 @@ export default function App() {
             {/* Section 5: Contact & Footer */}
             <Contact />
           </>
+        ) : route === 'gallery' ? (
+          <Gallery />
         ) : route === 'project-detail' ? (
           <Projects />
         ) : route === 'chat-admin' ? (
